@@ -3,7 +3,8 @@
 // enables sessions for the entire app
 session_start();
 
-require_once("controller/BooksController.php");
+require_once("controller/ProductsController.php");
+require_once("controller/AdminController.php");
 
 define("BASE_URL", $_SERVER["SCRIPT_NAME"] . "/");
 define("IMAGES_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/images/");
@@ -19,19 +20,51 @@ $path = isset($_SERVER["PATH_INFO"]) ? trim($_SERVER["PATH_INFO"], "/") : "";
   exit(); */
 
 // ROUTER: defines mapping between URLS and controllers
-
-// array, kjer so kluci nizi, ki predstavljajo imena posameznih controlerjev, vrednosti
-// so pa funkcije, na nacin:
-// $a = funkcion () {
-//  echo "hello world";
-//};
-//$a();
 $urls = [
-    "helloword" => function(){
-        BooksController::helloWord(); // gremo v firefox, in poklicemo
+    "admin" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "admin"){
+            ViewHelper::redirect(BASE_URL . "admin/users");
+        } else{
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                AdminController::check(); 
+            } else {
+                AdminController::login(); 
+            }
+        }
+    },
+    "admin/users" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "admin"){
+            AdminController::users();
+        } else{
+            ViewHelper::redirect(BASE_URL . "admin");
+        }
+    },
+    "admin/users/edit" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "admin"){
+            AdminController::users();
+        } else{
+            ViewHelper::redirect(BASE_URL . "admin");
+        }
+    },
+    "admin/logout" => function(){
+        $_SESSION["active"] = "";
+        $_SESSION["role"] = "";
+        $_SESSION["id"] = "";
+        ViewHelper::redirect(BASE_URL . "admin");
+    },  
+    "admin/users/add" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "admin"){
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                AdminController::addUser();
+            } else {
+                AdminController::addUserForm();
+            }
+        } else{
+            ViewHelper::redirect(BASE_URL . "admin");
+        }
     },
     "books" => function () {
-        BooksController::index(); // kodo damo v kodo, ki jo imenujemo kontrolerji
+        BooksController::index(); 
     },
     "books/add" => function () {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -51,7 +84,8 @@ $urls = [
         BooksController::delete();
     },
     "" => function () {
-        ViewHelper::redirect(BASE_URL . "books");
+        //ViewHelper::redirect(BASE_URL . "books");
+        
     },
 ];
 

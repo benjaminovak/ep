@@ -5,19 +5,19 @@ require_once 'model/AbstractDB.php';
 class ImagesDB extends AbstractDB {
 
     public static function insert(array $params) {
-        return parent::modify("INSERT INTO Slike (ime, slika, Izdelki_id) "
-                        . " VALUES (:ime, :slika, :Izdelki_id)", $params);
+        return parent::modify("INSERT INTO slika (ime, slika, izdelek_id) "
+                        . " VALUES (:ime, :slika, :izdelek_id)", $params);
     }
 
     public static function update();
     
     public static function delete(array $id) {
-        return parent::modify("DELETE FROM Slike WHERE id = :id", $id);
+        return parent::modify("DELETE FROM slika WHERE id = :id", $id);
     }
 
     public static function get(array $id) {
         $image = parent::query("SELECT id, ime, slika"
-                        . " FROM Slike"
+                        . " FROM slika"
                         . " WHERE id = :id", $id);
         
         if (count($image) == 1) {
@@ -29,7 +29,7 @@ class ImagesDB extends AbstractDB {
 
     public static function getAll(array $id) {
         return parent::query("SELECT id, ime, slika"
-                        . " FROM Slike"
+                        . " FROM slika"
                         . " WHERE id = :id", $id);
     }
 

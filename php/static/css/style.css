@@ -21,6 +21,17 @@
     vertical-align: top;
 }
 
+.label {
+    display: inline-block;
+    text-align: center;
+    min-height: 10px;
+    margin: 0em;
+    margin-top: 0.5em;
+    font-size: 110%;
+    line-height: 1;
+    color: #000;
+}
+
 #cart {
     padding: 1em;
     position: fixed;
@@ -29,4 +40,96 @@
     border: 1px solid black;
     background-color: #E8E8E8;
     min-width: 30%;
+}
+
+body {
+    line-height: 2.1;
+    color: #333;
+}
+
+body {
+	padding: 0px;
+        margin: 0;
+	background-color: #F6E3CE;
+}
+#p1{
+	font-size: 18px;
+	font-family: 'Open Sans';
+}
+#begin{
+	float: right;
+	margin-right: 2%;
+	padding-right: 5%;
+	padding-left: 5%;
+}
+#next{
+	float: right;
+	margin-right: 2%;
+	padding-right: 5%;
+	padding-left: 5%;
+}
+.wrapper{
+	float:left;
+	clear:left;
+	display: table;
+	table-layout: fixed;
+}
+img.img-responsive{
+	display:table-cell;
+	max-width:00%;
+}
+.pozdrav{
+	color: #FFFFFF;
+	margin: 20px;
+}
+.pozdrav1{
+	color: #FFFFFF;
+	margin: 20px;
+	font-size: 24px;
+}
+
+#menu{
+	background-color: #dac5a4;
+	font-family: 'Open Sans';
+}
+
+.navbar-default .navbar-nav > .active > a, 
+.navbar-default .navbar-nav > .active > a:focus {
+    color: #555;
+    background-color: #F6E3CE;
+}
+.navbar-default .navbar-nav > .active > a:hover{
+    color: #FFFFFF;
+    background-color: #2f76a7;
+    border-color: #FFFFFF;
+}
+
+#glava {
+	background-color: #2f76a7;
+}
+
+
+#k{
+	background-color: #F2F2F2;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #777;
+    font-size: 16px;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #FFFFFF;
+    background-color: #2f76a7;
+    border-color: none;
+}
+.table-nonfluid {
+	width: auto !important;
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+.table-width{
+	max-width: 100%;
+}
+span.tab{
+    padding: 0 3%;
 }
