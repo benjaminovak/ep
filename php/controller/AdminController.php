@@ -37,37 +37,47 @@ class AdminController {
     }
     
     public static function users() {
+        
+        echo ViewHelper::render("view/admin-users-list.php", [
+            "users" => UsersDB::getAllSalesmans()
+        ]);
+        
+    }
+    
+    public static function updateUserForm($values = ["ime" => "", "priimek" => "",
+        "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => ""]){
+        
         $rules = [
-            "id" => [   // id je celo stevilo, ki je vecje od ena
+            "id" => [   
                 'filter' => FILTER_VALIDATE_INT,
                 'options' => ['min_range' => 1]
             ]
         ];
  
-        $data = filter_input_array(INPUT_GET, $rules);
+        $data = filter_input_array(INPUT_POST, $rules);
+        
 
-        if (self::checkValues($data)) { //ustvari form za editiranje
+        if (self::checkValues($data)) { 
             $result = UsersDB::getSalesman($data);
             $result["geslo2"] = $result["geslo"];
-            $form = new OsebaForm('registracija', UsersDB::getSalesman($data));
-            echo ViewHelper::render("view/admin-user-edit.php", ["form" => $form, "id" => $data]);
-        } else {
-            echo ViewHelper::render("view/admin-users-list.php", [
-                "users" => UsersDB::getAllSalesmans()
-            ]);
+            $_SESSION["uid"] = $data["id"];
+            $form = new OsebaForm('registracija', $result);
+            echo ViewHelper::render("view/admin-user-edit.php", ["form" => $form]);
+        }
+        else {
+            $values["geslo2"] = $values["geslo"];
+            $form = new OsebaForm('registracija', $values);
+            echo ViewHelper::render("view/admin-user-edit.php", ["form" => $form]);
         }
     }
     
     public static function updateUser($data = []) {
-        var_dump($data);
-        exit();
+
         if (self::checkValues($data)) {
             UsersDB::updateUser($data);
-            echo $data;
-            echo ViewHelper::redirect(BASE_URL . "admin/users");
-        } else {
-            echo ViewHelper::redirect(BASE_URL . "admin/users/edit?id=".$data["id"]);
         }
+        echo ViewHelper::redirect(BASE_URL . "admin/users");
+         
     }
     
     public static function addUserForm($values = ["ime" => "", "priimek" => "",
@@ -80,6 +90,8 @@ class AdminController {
     
     public static function addUser($data = []) {
         
+        // potrebno je dodati še preverjanje, če je slučajno user z enakim uporabniškim imenom že v bazi
+        // enako je treba če urejamo podatke
         if (self::checkValues($data)) {
             UsersDB::insertUser($data);
             echo ViewHelper::redirect(BASE_URL . "admin/users");

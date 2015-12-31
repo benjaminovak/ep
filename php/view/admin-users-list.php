@@ -76,7 +76,12 @@
                                                         <th><?=$user["mail"]?></th>
                                                         <th><?=$user["uporabnisko_ime"]?></th>
                                                         <th><?=$user["aktiven"]?></th>
-                                                        <th><a href="<?= BASE_URL. "admin/users/edit?id=" .$user["id"] ?>"><button type="button" class="btn btn-default">Spremeni</button></a></th>
+                                                        <th>
+                                                            <form action="<?= BASE_URL. "admin/users/edit" ?>" method="POST">
+                                                                <input type="hidden" name="id" value="<?= $user["id"] ?>" />
+                                                                <input type="submit" value="Spremeni" />
+                                                            </form>
+                                                        </th>
                                                     </tr>
                                                 <?php endforeach; ?>
                                                  </tbody>

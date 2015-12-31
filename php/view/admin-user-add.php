@@ -60,7 +60,8 @@
                                                 } catch (PDOException $exc) {
                                                     dminController::addUser();
                                                 }
-                                            } else {
+                                            }
+                                            else {
                                                 echo $form;
                                             }
                                             ?>

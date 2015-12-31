@@ -41,8 +41,9 @@ $urls = [
     },
     "admin/users/edit" => function(){
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "admin"){
-            AdminController::users();
+            AdminController::updateUserForm();
         } else{
+            $_SESSION["uid"] = "";
             ViewHelper::redirect(BASE_URL . "admin");
         }
     },
@@ -54,11 +55,7 @@ $urls = [
     },  
     "admin/users/add" => function(){
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "admin"){
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                AdminController::addUser();
-            } else {
-                AdminController::addUserForm();
-            }
+            AdminController::addUserForm();
         } else{
             ViewHelper::redirect(BASE_URL . "admin");
         }

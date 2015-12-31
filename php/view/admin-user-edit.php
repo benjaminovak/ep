@@ -43,7 +43,7 @@
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <b><span class="pozdrav">Nov uporabnik</span></b>
+                                            <b><span class="pozdrav">Spremeni uporabnika</span></b>
                                     </div>
                                 </div>
                             </div>
@@ -53,17 +53,15 @@
                                     <div class="row-fluid">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <?php
-                                            if ($form->isSubmitted() && $form->validate()) {    
-                                                var_dump("tukaj");
-                                                exit();
+                                            if ($form->isSubmitted() && $form->validate()) {
                                                 try {
                                                     $data = $form->getValue();
-                                                    
                                                     AdminController::updateUser($data);
                                                 } catch (PDOException $exc) {
                                                     AdminController::updateUser();
                                                 }
-                                            } else {
+                                            } 
+                                            else {
                                                 echo $form;
                                             }
                                             ?>

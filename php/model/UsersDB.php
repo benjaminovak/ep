@@ -41,6 +41,8 @@ class UsersDB extends AbstractDB {
         else {
             $params["aktiven"] = "ne";
         }
+        $params["id"] = $_SESSION["uid"];
+        var_dump($params);
         $result = self::update($params);
         return parent::modify("INSERT INTO prodajalec (uporabnik_id) "
                         . " VALUES (:uporabnik_id)",["uporabnik_id" => $result]);
