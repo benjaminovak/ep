@@ -94,13 +94,21 @@ class OsebaForm extends HTML_QuickForm2 {
 
         $this->gumb = new HTML_QuickForm2_Element_InputSubmit(null);
          if($action == "dodajanje"){
-             $this->gumb->setAttribute('value', 'Ustvari prodajalca');
+            if(isset($values["stranka"])){
+                $this->gumb->setAttribute('value', 'Ustvari stranko');
+            } else {
+                $this->gumb->setAttribute('value', 'Ustvari prodajalca');
+            }
         }
         elseif ($action == "profil") {
             $this->gumb->setAttribute('value', 'Spremeni');
         }
         else{
-           $this->gumb->setAttribute('value', 'Spremeni prodajalca');
+            if(isset($values["stranka"])){
+                $this->gumb->setAttribute('value', 'Spremeni stranko');
+            } else {
+                $this->gumb->setAttribute('value', 'Spremeni prodajalca');
+            }
         }
 
         $this->addElement($this->ime);

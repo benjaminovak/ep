@@ -45,12 +45,12 @@
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <b><span class="pozdrav">Seznam uporabnikov</span></b>
+                                            <b><span class="pozdrav">Seznam prodajalcev</span></b>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2">
-                                        <a href="<?= BASE_URL."users/add" ?>"><button type="button" class="btn btn-default">Dodaj uporabnika</button></a>
+                                        <a href="<?= BASE_URL."users/add" ?>"><button type="button" class="btn btn-default">Dodaj prodajalca</button></a>
                                     </div>
                                 </div>
                             </div>

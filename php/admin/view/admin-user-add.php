@@ -59,7 +59,7 @@
                                                     $data = $form->getValue();
                                                     AdminController::addUser($data);
                                                 } catch (PDOException $exc) {
-                                                    dminController::addUser();
+                                                    AdminController::addUser();
                                                 }
                                             }
                                             else {

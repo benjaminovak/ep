@@ -21,18 +21,21 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <nav class="navbar navbar-default" id="menu">
                           <div class="container-fluid">
-                            <div class="col-lg-11 col-md-11 col-sm-11">
-                              <ul class="nav navbar-nav">
-                                <li><a href="<?= BASE_URL."users" ?>">Uporabniki</a></li>
-                                <li class="active"><a href="<?= BASE_URL."profile" ?>">Profil</a></li>
-                              </ul>
+                            <div class="col-lg-9 col-md-9 col-sm-9">
+                                <ul class="nav navbar-nav">
+                                    <li><a href="<?= BASE_URL."orders" ?>">Naročila</a></li>
+                                    <li><a href="<?= BASE_URL."products" ?>">Izdelki</a></li>
+                                    <li><a href="<?= BASE_URL."users" ?>">Stranke</a></li>
+                                </ul>                                
                             </div> 
-                            <div class="col-lg-1 col-md-1 col-sm-1">
+                            <div class="col-lg-3 col-md-3 col-sm-3">
                               <ul class="nav navbar-nav">
+                                <li class="active"><a href="<?= BASE_URL."profile" ?>">Profil</a></li>
                                 <li><a href="<?= BASE_URL."logout" ?>">Odjava</a></li>
                               </ul>
                             </div> 
-                          </div> 
+                          </div>
+                                   
                         </nav>
                     </div>
                 </div>

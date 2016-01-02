@@ -25,7 +25,7 @@
                                 <ul class="nav navbar-nav">
                                     <li><a href="<?= BASE_URL."orders" ?>">Naročila</a></li>
                                     <li class="active"><a href="<?= BASE_URL."products" ?>">Izdelki</a></li>
-                                    <li><a href="<?= BASE_URL."customers" ?>">Stranke</a></li>
+                                    <li><a href="<?= BASE_URL."users" ?>">Stranke</a></li>
                                 </ul>                                
                             </div> 
                             <div class="col-lg-3 col-md-3 col-sm-3">

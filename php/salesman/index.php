@@ -122,22 +122,39 @@ $urls = [
             ViewHelper::redirect(BASE_URL);
         }
     },
+    "users" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
+            SalesmanController::users();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "users/add" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
+            SalesmanController::addUserForm();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "users/edit" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
+            SalesmanController::updateUserForm();
+        } else{
+            unset($_SESSION["uid"]);
+            unset($_SESSION["uname"]);
+            ViewHelper::redirect(BASE_URL);
+        }
+    },        
     "profile" => function() {
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
-            AdminController::profileForm();
+            SalesmanController::profileForm();
         } else{
             unset($_SESSION["uid"]);
             unset($_SESSION["uname"]);
             ViewHelper::redirect(BASE_URL);
         } 
     },
-    "users/add" => function(){
-        if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
-            AdminController::addUserForm();
-        } else{
-            ViewHelper::redirect(BASE_URL);
-        }
-    },
+    
 ];
 
 

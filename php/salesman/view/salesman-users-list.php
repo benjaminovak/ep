@@ -23,12 +23,9 @@
                           <div class="container-fluid">
                             <div class="col-lg-9 col-md-9 col-sm-9">
                                 <ul class="nav navbar-nav">
-                                    <li><a>Naročila:</a></li>
-                                    <li class="active"><a href="<?= BASE_URL."orders" ?>">Neobdelana</a></li>
-                                    <li><a href="<?= BASE_URL."orders/present" ?>">Obdelana</a></li>
-                                    <li><a href="<?= BASE_URL."orders/proven?sort=id" ?>">Potrjena</a></li>
+                                    <li><a href="<?= BASE_URL."orders" ?>">Naročila</a></li>
                                     <li><a href="<?= BASE_URL."products" ?>">Izdelki</a></li>
-                                    <li><a href="<?= BASE_URL."users" ?>">Stranke</a></li>
+                                    <li class="active"><a href="<?= BASE_URL."users" ?>">Stranke</a></li>
                                 </ul>                                
                             </div> 
                             <div class="col-lg-3 col-md-3 col-sm-3">
@@ -37,8 +34,7 @@
                                 <li><a href="<?= BASE_URL."logout" ?>">Odjava</a></li>
                               </ul>
                             </div> 
-                          </div>
-                                   
+                          </div>   
                         </nav>
                     </div>
                 </div>
@@ -50,7 +46,12 @@
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <b><span class="pozdrav">Seznam neobdelanih naročil</span></b>
+                                            <b><span class="pozdrav">Seznam strank</span></b>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                        <a href="<?= BASE_URL."users/add" ?>"><button type="button" class="btn btn-default">Dodaj stranko</button></a>
                                     </div>
                                 </div>
                             </div>
@@ -62,28 +63,32 @@
                                             <table class="table table-hover">
                                                 <thead>
                                                   <tr>
-                                                    <th>Id</th>
-                                                    <th>Številka uporabnika</th>
-                                                    <th>Datum</th>
+                                                    <th>Ime</th>
+                                                    <th>Priimek</th>
+                                                    <th>Email</th>
+                                                    <th>Uporabniško ime</th>
+                                                    <th>Aktiven</th>
                                                     <th></th>
                                                   </tr>
                                                 </thead>
                                                 <tbody>
-                                                <?php foreach ($orders as $order): ?>
+                                                <?php foreach ($users as $user): ?>
                                                     <tr>
-                                                        <th><?=$order["id"]?></th>
-                                                        <th><?=$order["uporabnik_id"]?></th>
-                                                         <th><?=$order["datum"]?></th>
+                                                        <th><?=$user["ime"]?></th>
+                                                        <th><?=$user["priimek"]?></th>
+                                                        <th><?=$user["mail"]?></th>
+                                                        <th><?=$user["uporabnisko_ime"]?></th>
+                                                        <th><?=$user["aktiven"]?></th>
                                                         <th>
-                                                            <form action="<?= BASE_URL. "orders/detail" ?>" method="POST">
-                                                                <input type="hidden" name="id" value="<?= $order["id"] ?>" />
-                                                                <input type="submit" value="Podrobnosti" class="btn btn-default"/>
+                                                            <form action="<?= BASE_URL. "users/edit" ?>" method="POST">
+                                                                <input type="hidden" name="id" value="<?= $user["id"] ?>" />
+                                                                <input type="submit" value="Spremeni" class="btn btn-default"/>
                                                             </form>
                                                         </th>
                                                     </tr>
                                                 <?php endforeach; ?>
-                                                 </tbody>
-                                                </table>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

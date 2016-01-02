@@ -28,7 +28,7 @@
                                     <li class="active"><a href="<?= BASE_URL."orders/present" ?>">Obdelana</a></li>
                                     <li><a href="<?= BASE_URL."orders/proven?sort=id" ?>">Potrjena</a></li>
                                     <li><a href="<?= BASE_URL."products" ?>">Izdelki</a></li>
-                                    <li><a href="<?= BASE_URL."customers" ?>">Stranke</a></li>
+                                    <li><a href="<?= BASE_URL."users" ?>">Stranke</a></li>
                                 </ul>
                               </ul>
                             </div> 

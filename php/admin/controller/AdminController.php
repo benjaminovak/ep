@@ -37,6 +37,13 @@ class AdminController {
         }
     }
     
+    /*
+     *  
+     *  D E L O   Z   S T R A N K A M I
+     * 
+     *      
+     */
+    /*Vsi uporabniki*/
     public static function users() {
         
         echo ViewHelper::render("view/admin-users-list.php", [
@@ -45,6 +52,7 @@ class AdminController {
         
     }
     
+    /*Posodabljanje profila - forma*/
     public static function profileForm() {
         $result = UsersDB::getAdmin(["id" => $_SESSION["id"]]);
         $result["geslo2"] = $result["geslo"];
@@ -56,6 +64,7 @@ class AdminController {
        
     }
     
+    /*Posodabljanje profila*/
     public static function profile($data = []) {
         
         if (self::checkValues($data)) {
@@ -65,6 +74,7 @@ class AdminController {
         
     }
     
+    /*Posodabljanje uporabnika Prodajalec - forma*/
     public static function updateUserForm($values = ["ime" => "", "priimek" => "",
         "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => ""]){
         
@@ -93,6 +103,7 @@ class AdminController {
         }
     }
     
+    /*Posodabljanje uporabnika Prodajalec*/
     public static function updateUser($data = []) {
 
         if (self::checkValues($data)) {
@@ -102,6 +113,7 @@ class AdminController {
          
     }
     
+    /*Dodajanje uporabnika Prodajalec - forma*/
     public static function addUserForm($values = ["ime" => "", "priimek" => "",
         "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => ""]) {
         $values["geslo"] = "";
@@ -110,6 +122,7 @@ class AdminController {
         echo ViewHelper::render("view/admin-user-add.php", ["form" => $form]);
     }
     
+    /*Dodajanje uporabnika Prodajalec*/
     public static function addUser($data = []) {
         
         if (self::checkValues($data)) {
@@ -121,6 +134,12 @@ class AdminController {
         
     }
     
+    /*
+    *  
+    *  P R E V E R J A N J E   V H O D O V 
+    * 
+    *      
+    */
     private static function checkValues($input) {
         if (empty($input)) {
             return FALSE;

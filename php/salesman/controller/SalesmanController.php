@@ -9,6 +9,13 @@ require_once("../ViewHelper.php");
 
 class SalesmanController {
     
+    /*
+     *  
+     *  P R I J A V A
+     * 
+     *      
+     */
+    
     public static function login($data = ["uname" => "", "password" => "", "authorized_users" => []]) {
         
         $data["authorized_users"] = [];
@@ -43,6 +50,13 @@ class SalesmanController {
         }
     }
     
+    /*
+     *  
+     *  D E L O  Z  N A R O Č I L I
+     * 
+     *      
+     */
+    /*Prikaz vseh neobdelanih naročil*/
     public static function orders() {
         
         echo ViewHelper::render("view/salesman-orders-list.php", [
@@ -51,6 +65,7 @@ class SalesmanController {
         
     }
     
+    /*Prikaz naročila*/
     public static function orderDetail() {
         
         $rules = [
@@ -76,6 +91,7 @@ class SalesmanController {
         
     }
     
+    /*Prestavitev naročila med obdelane*/
     public static function orderHandling() {
         
         $rules = [
@@ -98,6 +114,7 @@ class SalesmanController {
         
     }
     
+    /*Vsa obdelana naročila*/
     public static function ordersPresent() {
         
         echo ViewHelper::render("view/salesman-orders-list-present.php", [
@@ -106,7 +123,7 @@ class SalesmanController {
        
     }
     
-
+    /*Eno obdelano naročilo*/
     public static function orderPresentDetail() {
         
         $rules = [
@@ -134,6 +151,7 @@ class SalesmanController {
         
     }
    
+    /*Potrjevanje ali preklic naročila*/
     public static function orderConfirmation($insert) {
         
         $rules = [
@@ -157,6 +175,7 @@ class SalesmanController {
         
     }
     
+    /*Vsa potrjena naročila*/
     public static function ordersProven() {
         
         $rules = [
@@ -175,7 +194,7 @@ class SalesmanController {
        
     }
     
-
+    /*Eno potrjeno naročila*/
     public static function orderProvenDetail() {
         
         $rules = [
@@ -202,6 +221,13 @@ class SalesmanController {
         }
     }
     
+    /*
+     *  
+     *  D E L O  Z  I Z D E L K I
+     * 
+     *      
+     */
+    /*Vsi izdelki*/
     public static function products() {
         
         echo ViewHelper::render("view/salesman-products-list.php", [
@@ -210,6 +236,7 @@ class SalesmanController {
         
     }
     
+    /*Posodabljanje izdelka -forma*/
     public static function updateProductForm($values = ["naziv" => "", "cena" => "",
         "opis" => "", "ektiven" => ""]){
         
@@ -236,6 +263,7 @@ class SalesmanController {
         }
     }
     
+    /*Posodabljanje izdelka*/
     public static function updateProduct($data = []) {
 
         if (self::checkValues($data)) {
@@ -245,13 +273,14 @@ class SalesmanController {
          
     }
     
- 
+    /*Dodajanje izdelka -forma*/
     public static function addProductForm($values = ["naziv" => "", "cena" => "",
         "opis" => "", "ektiven" => ""]) {
         $form = new ProductForm('registracija', $values, "dodajanje");
         echo ViewHelper::render("view/salesman-product-add.php", ["form" => $form]);
     }
     
+    /*Dodajanje izdelka*/
     public static function addProduct($data = []) {
         
         if (self::checkValues($data)) {
@@ -262,7 +291,112 @@ class SalesmanController {
         }
     }
     
-     private static function checkValues($input) {
+    /*
+     *  
+     *  D E L O   Z   S T R A N K A M I
+     *      
+     */
+    /*Vsi uporabniki*/
+    public static function users() {
+        
+        echo ViewHelper::render("view/salesman-users-list.php", [
+            "users" => UsersDB::getAllCustomers()
+        ]);
+        
+    }
+    
+    /*Posodabljanje profila - forma*/
+    public static function profileForm() {
+        $result = UsersDB::getSalesman(["id" => $_SESSION["id"]]);
+        $result["geslo2"] = $result["geslo"];
+        $result["stranka"] = true;
+        $_SESSION["uid"] = $_SESSION["id"];
+        $_SESSION["uname"] = $result["uporabnisko_ime"];
+        $form = new OsebaForm('registracija', $result, "profil");
+        echo ViewHelper::render("view/salesman-profile.php", ["form" => $form]);
+       
+    }
+    
+    /*Posodabljanje profila*/
+    public static function profile($data = []) {
+        
+        if (self::checkValues($data)) {
+            UsersDB::updateUser($data);
+        }
+        echo ViewHelper::redirect(BASE_URL . "profile");
+        
+    }
+    
+    /*Posodabljanje uporabnika Stranka - forma*/
+    public static function updateUserForm($values = ["ime" => "", "priimek" => "",
+        "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => ""]){
+        
+        $rules = [
+            "id" => [   
+                'filter' => FILTER_VALIDATE_INT,
+                'options' => ['min_range' => 1]
+            ]
+        ];
+ 
+        $data = filter_input_array(INPUT_POST, $rules);
+
+        if (self::checkValues($data)) { 
+            $result = UsersDB::getAllCustomer($data);
+            $result["geslo2"] = $result["geslo"];
+            $result["stranka"] = true;
+            $_SESSION["uid"] = $data["id"];
+            $_SESSION["uname"] = $result["uporabnisko_ime"];
+            $form = new OsebaForm('registracija', $result, "spreminjanje");
+            echo ViewHelper::render("view/salesman-user-edit.php", ["form" => $form]);
+        }
+        else {
+            $values["geslo2"] = $values["geslo"];
+            $form = new OsebaForm('registracija', $values, "spreminjanje");
+            echo ViewHelper::render("view/salesman-user-edit.php", ["form" => $form]);
+        }
+    }
+    
+    /*Posodabljanje uporabnika Stranka*/
+    public static function updateUser($data = []) {
+
+        if (self::checkValues($data)) {
+            UsersDB::updateCustomer($data);
+        }
+        echo ViewHelper::redirect(BASE_URL . "users");
+         
+    }
+    
+    /*Dodajanje uporabnika Stranka - forma*/
+    public static function addUserForm($values = ["ime" => "", "priimek" => "",
+        "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => ""]) {
+        $values["geslo"] = "";
+        $values["geslo2"] = "";
+        $values["stranka"] = true;
+        $form = new OsebaForm('registracija', $values, "dodajanje");
+        echo ViewHelper::render("view/salesman-user-add.php", ["form" => $form]);
+    }
+    
+    /*Dodajanje uporabnika Stranka*/
+    public static function addUser($data = []) {
+        
+        if (self::checkValues($data)) {
+            UsersDB::insertCustomer($data);
+            echo ViewHelper::redirect(BASE_URL . "users");
+        } else {
+            self::addUserForm();
+        }
+        
+    }
+    
+    
+    
+    /*
+    *  
+    *  P R E V E R J A N J E   V H O D O V 
+    * 
+    *      
+    */
+    private static function checkValues($input) {
         if (empty($input)) {
             return FALSE;
         }
