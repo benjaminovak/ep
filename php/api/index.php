@@ -1,6 +1,6 @@
 <?php
 
-require_once 'model/ProductsDB.php';
+require_once '../model/ProductsDB.php';
 
 header('Content-Type: application/json');
 
