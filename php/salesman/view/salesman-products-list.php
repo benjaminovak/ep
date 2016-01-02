@@ -6,7 +6,7 @@
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" type="text/css" href="<?= str_replace("index.php/", "../static/css/style.css", BASE_URL) ?>" />
-        <title>Admin</title>
+        <title>Prodajalec</title>
     </head>
     <body>
         
@@ -47,7 +47,7 @@
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <b><span class="pozdrav">Seznam izdelko</span></b>
+                                            <b><span class="pozdrav">Seznam izdelkov</span></b>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                     </div>
@@ -66,7 +66,7 @@
                                                   <tr>
                                                     <th>Id</th>
                                                     <th>Naziv</th>
-                                                    <th>Cena</th>
+                                                    <th>Cena [€]</th>
                                                     <th>Aktiven</th>
                                                     <th></th>
                                                   </tr>
@@ -82,6 +82,12 @@
                                                             <form action="<?= BASE_URL. "products/edit" ?>" method="POST">
                                                                 <input type="hidden" name="id" value="<?= $product["id"] ?>" />
                                                                 <input type="submit" value="Uredi" class="btn btn-default"/>
+                                                            </form>
+                                                        </th>
+                                                        <th>
+                                                            <form action="<?= BASE_URL. "products/images" ?>" method="POST">
+                                                                <input type="hidden" name="id" value="<?= $product["id"] ?>" />
+                                                                <input type="submit" value="Upravljanje slik" class="btn btn-default"/>
                                                             </form>
                                                         </th>
                                                     </tr>

@@ -112,15 +112,13 @@ class AdminController {
     
     public static function addUser($data = []) {
         
-        // potrebno je dodati še preverjanje, če je slučajno user z enakim uporabniškim imenom že v bazi
-        // enako je treba če urejamo podatke
         if (self::checkValues($data)) {
             UsersDB::insertUser($data);
             echo ViewHelper::redirect(BASE_URL . "users");
         } else {
-            //sicer prikažemo obrazec, ki ni uspel
             self::addUserForm();
         }
+        
     }
     
     private static function checkValues($input) {

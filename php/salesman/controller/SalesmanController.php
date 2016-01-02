@@ -4,6 +4,7 @@ require_once("../model/UsersDB.php");
 require_once("../model/OrdersDB.php");
 require_once("../model/ProductsDB.php");
 require_once("../model/OsebaForm.php");
+require_once("../model/ProductForm.php");
 require_once("../ViewHelper.php");
 
 class SalesmanController {
@@ -207,6 +208,58 @@ class SalesmanController {
             "products" => ProductsDB::getAll()
         ]);
         
+    }
+    
+    public static function updateProductForm($values = ["naziv" => "", "cena" => "",
+        "opis" => "", "ektiven" => ""]){
+        
+        $rules = [
+            "id" => [   
+                'filter' => FILTER_VALIDATE_INT,
+                'options' => ['min_range' => 1]
+            ]
+        ];
+ 
+        $data = filter_input_array(INPUT_POST, $rules);
+        
+
+        if (self::checkValues($data)) { 
+            $result = ProductsDB::get($data);
+            $_SESSION["pid"] = $data["id"];
+            $_SESSION["pname"] = $result["naziv"];
+            $form = new ProductForm('registracija', $result, "spreminjanje");
+            echo ViewHelper::render("view/salesman-product-edit.php", ["form" => $form]);
+        }
+        else {
+            $form = new ProductForm('registracija', $values, "spreminjanje");
+            echo ViewHelper::render("view/salesman-product-edit.php", ["form" => $form]);
+        }
+    }
+    
+    public static function updateProduct($data = []) {
+
+        if (self::checkValues($data)) {
+            ProductsDB::updateProduct($data);
+        }
+        echo ViewHelper::redirect(BASE_URL . "products");
+         
+    }
+    
+ 
+    public static function addProductForm($values = ["naziv" => "", "cena" => "",
+        "opis" => "", "ektiven" => ""]) {
+        $form = new ProductForm('registracija', $values, "dodajanje");
+        echo ViewHelper::render("view/salesman-product-add.php", ["form" => $form]);
+    }
+    
+    public static function addProduct($data = []) {
+        
+        if (self::checkValues($data)) {
+            ProductsDB::addProduct($data);
+            echo ViewHelper::redirect(BASE_URL . "products");
+        } else {
+            self::addUserForm();
+        }
     }
     
      private static function checkValues($input) {

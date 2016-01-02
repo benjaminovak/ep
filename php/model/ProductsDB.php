@@ -8,11 +8,33 @@ class ProductsDB extends AbstractDB {
         return parent::modify("INSERT INTO izdelek (naziv, cena, opis, aktiven) "
                         . " VALUES (:naziv, :cena, :opis, :aktiven)", $params);
     }
+    
+    
+    public static function addProduct(array $params) {
+        if($params["aktiven"] == 1){
+            $params["aktiven"] = "da";
+        }
+        else {
+            $params["aktiven"] = "ne";
+        }
+        return self::insert($params);
+    }
 
     public static function update(array $params) {
         return parent::modify("UPDATE izdelek SET naziv = :naziv, cena = :cena, "
                         . "opis = :opis, aktiven = :aktiven"
                         . " WHERE id = :id", $params);
+    }
+    
+    public static function updateProduct(array $params) {
+        if($params["aktiven"] == 1){
+            $params["aktiven"] = "da";
+        }
+        else {
+            $params["aktiven"] = "ne";
+        }
+        $params["id"] = $_SESSION["pid"];
+        return self::update($params);
     }
 
     public static function delete(array $id) {

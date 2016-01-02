@@ -105,7 +105,23 @@ $urls = [
         } else{
             ViewHelper::redirect(BASE_URL);
         }
-    },        
+    },    
+    "products/edit" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
+            SalesmanController::updateProductForm();
+        } else{
+            unset($_SESSION["uid"]);
+            unset($_SESSION["uname"]);
+            ViewHelper::redirect(BASE_URL);
+        }
+    }, 
+    "products/add" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
+            SalesmanController::addProductForm();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
     "profile" => function() {
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
             AdminController::profileForm();

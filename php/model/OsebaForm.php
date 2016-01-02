@@ -87,7 +87,9 @@ class OsebaForm extends HTML_QuickForm2 {
         if ($action != "profil") {
             $this->aktiven = new HTML_QuickForm2_Element_InputCheckbox('aktiven');
             $this->aktiven->setLabel('Aktiven uporabnik:');
-            $this->aktiven->setValue($values["aktiven"]);
+            if(isset($values["aktiven"]) && $values["aktiven"] == "da" ) {
+                $this->aktiven->setValue(1);
+            }
         }        
 
         $this->gumb = new HTML_QuickForm2_Element_InputSubmit(null);

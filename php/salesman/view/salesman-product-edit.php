@@ -6,7 +6,7 @@
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" type="text/css" href="<?= str_replace("index.php/", "../static/css/style.css", BASE_URL) ?>" />
-        <title>Prodajalec</title>
+        <title>Admin</title>
     </head>
     <body>
         
@@ -22,14 +22,11 @@
                         <nav class="navbar navbar-default" id="menu">
                           <div class="container-fluid">
                             <div class="col-lg-9 col-md-9 col-sm-9">
-                                </ul><ul class="nav navbar-nav">
-                                    <li><a>Naročila:</a></li>
-                                    <li><a href="<?= BASE_URL."orders" ?>">Neobdelana</a></li>
-                                    <li><a href="<?= BASE_URL."orders/present" ?>">Obdelana</a></li>
-                                    <li class="active"><a href="<?= BASE_URL."orders/proven?sort=id" ?>">Potrjena</a></li>
-                                    <li><a href="<?= BASE_URL."products" ?>">Izdelki</a></li>
+                                <ul class="nav navbar-nav">
+                                    <li><a href="<?= BASE_URL."orders" ?>">Naročila</a></li>
+                                    <li class="active"><a href="<?= BASE_URL."products" ?>">Izdelki</a></li>
                                     <li><a href="<?= BASE_URL."customers" ?>">Stranke</a></li>
-                                </ul>    
+                                </ul>                                
                             </div> 
                             <div class="col-lg-3 col-md-3 col-sm-3">
                               <ul class="nav navbar-nav">
@@ -38,7 +35,6 @@
                               </ul>
                             </div> 
                           </div>
-                                   
                         </nav>
                     </div>
                 </div>
@@ -50,7 +46,7 @@
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <b><span class="pozdrav">Seznam obdelanih naročil</span></b>
+                                            <b><span class="pozdrav">Spremeni uporabnika</span></b>
                                     </div>
                                 </div>
                             </div>
@@ -59,31 +55,19 @@
                                 <div class="container-fluid">
                                     <div class="row-fluid">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                  <tr>
-                                                    <th><a href="<?= BASE_URL. "orders/proven?sort=id" ?>" class="btn btn-link">Id</a></th>
-                                                    <th><a href="<?= BASE_URL. "orders/proven?sort=uporabnik_id" ?>" class="btn btn-link">Številka uporabnika</a></th>
-                                                    <th><a href="<?= BASE_URL. "orders/proven?sort=datum" ?>" class="btn btn-link">Datum</a></th>
-                                                    <th></th>
-                                                  </tr>
-                                                </thead>
-                                                <tbody>
-                                                <?php foreach ($orders as $order): ?>
-                                                    <tr>
-                                                        <th><?=$order["id"]?></th>
-                                                        <th><?=$order["uporabnik_id"]?></th>
-                                                        <th><?=$order["datum"]?></th>
-                                                        <th>
-                                                            <form action="<?= BASE_URL. "orders/proven/detail" ?>" method="POST">
-                                                                <input type="hidden" name="id" value="<?= $order["id"] ?>" />
-                                                                <input type="submit" value="Podrobnosti" class="btn btn-default"/>
-                                                            </form>
-                                                        </th>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                                 </tbody>
-                                                </table>
+                                            <?php
+                                            if ($form->isSubmitted() && $form->validate()) {
+                                                try {
+                                                    $data = $form->getValue();
+                                                    SalesmanController::updateProduct($data);
+                                                } catch (PDOException $exc) {
+                                                    SalesmanController::updateProduct();
+                                                }
+                                            } 
+                                            else {
+                                                echo $form;
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>

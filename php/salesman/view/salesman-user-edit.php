@@ -57,9 +57,9 @@
                                             if ($form->isSubmitted() && $form->validate()) {
                                                 try {
                                                     $data = $form->getValue();
-                                                    AdminController::updateUser($data);
+                                                    SalesmanController::updateUser($data);
                                                 } catch (PDOException $exc) {
-                                                    AdminController::updateUser();
+                                                    SalesmanController::updateUser();
                                                 }
                                             } 
                                             else {
