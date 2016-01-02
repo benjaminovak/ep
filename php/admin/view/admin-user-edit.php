@@ -2,8 +2,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="<?= str_replace("index.php/", "/static/css/style.css", BASE_URL) ?>" />
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?= str_replace("index.php/", "../static/css/style.css", BASE_URL) ?>" />
         <title>Admin</title>
     </head>
     <body>
@@ -11,7 +13,7 @@
         <div class="wrapper col-lg-12 col-md-12 col-sm-12">
             <div class="navbar-inner">
                  <div class="container">
-                    <img src="<?= str_replace("index.php/", "static/images/logo.png", BASE_URL) ?>" class="img-rounded" width="100%"/></center>
+                    <img src="<?= str_replace("index.php/", "../static/images/logo.png", BASE_URL) ?>" class="img-rounded" width="100%"/></center>
                  </div>
             </div>
             <div class="container">
@@ -21,17 +23,16 @@
                           <div class="container-fluid">
                             <div class="col-lg-11 col-md-11 col-sm-11">
                               <ul class="nav navbar-nav">
-                                <li class="active"><a href="<?= BASE_URL."admin/users" ?>">Uporabniki</a></li>
-                                <li><a href="<?= BASE_URL."admin/profil" ?>">Profil</a></li>
+                                <li class="active"><a href="<?= BASE_URL."users" ?>">Uporabniki</a></li>
+                                <li><a href="<?= BASE_URL."profile" ?>">Profil</a></li>
                               </ul>
                             </div> 
                             <div class="col-lg-1 col-md-1 col-sm-1">
                               <ul class="nav navbar-nav">
-                                <li><a href="<?= BASE_URL."admin/logout" ?>">Odjava</a></li>
+                                <li><a href="<?= BASE_URL."logout" ?>">Odjava</a></li>
                               </ul>
                             </div> 
-                          </div>
-                                   
+                          </div>       
                         </nav>
                     </div>
                 </div>
@@ -43,7 +44,7 @@
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <b><span class="pozdrav">Nov uporabnik</span></b>
+                                            <b><span class="pozdrav">Spremeni uporabnika</span></b>
                                     </div>
                                 </div>
                             </div>
@@ -53,14 +54,14 @@
                                     <div class="row-fluid">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <?php
-                                            if ($form->isSubmitted() && $form->validate()) {    
+                                            if ($form->isSubmitted() && $form->validate()) {
                                                 try {
                                                     $data = $form->getValue();
-                                                    AdminController::addUser($data);
+                                                    AdminController::updateUser($data);
                                                 } catch (PDOException $exc) {
-                                                    dminController::addUser();
+                                                    AdminController::updateUser();
                                                 }
-                                            }
+                                            } 
                                             else {
                                                 echo $form;
                                             }

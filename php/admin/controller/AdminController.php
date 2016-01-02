@@ -1,28 +1,29 @@
 <?php
 
-require_once("model/UsersDB.php");
-require_once("model/OsebaForm.php");
-require_once("ViewHelper.php");
+require_once("../model/UsersDB.php");
+require_once("../model/OsebaForm.php");
+require_once("../ViewHelper.php");
 
 class AdminController {
     
-    public static function login($data = ["uname" => "", "password" => ""]) {
+    public static function login($data = ["uname" => "", "password" => "", "authorized_users" => ["Admin"]]) {
+        
         echo ViewHelper::render("view/admin-login.php", $data);
+        
     }
     
     public static function check() {
         $data = filter_input_array(INPUT_POST, self::getLoginRules());
         
         if (self::checkValues($data)) {
-            $username = $data["uname"];
-            
-            
+            $username = $data["uname"];            
             $result = UsersDB::getPassword(["uporabnisko_ime" => $username]);
-            if (password_verify($data["password"], $result["geslo"]) && UsersDB::isAdmin(["uporabnik_id" => $result["id"]]) == 1) {
+            
+            if ($result != null && password_verify($data["password"], $result["geslo"]) && UsersDB::isAdmin(["uporabnik_id" => $result["id"]]) == 1) {
                 $_SESSION["active"] = TRUE;
                 $_SESSION["role"] = "admin";
                 $_SESSION["id"] = $result["id"];
-                ViewHelper::redirect(BASE_URL."admin");
+                ViewHelper::redirect(BASE_URL);
             }
             else{
                 $data["password"] = "";
@@ -44,6 +45,26 @@ class AdminController {
         
     }
     
+    public static function profileForm() {
+        $result = UsersDB::getAdmin(["id" => $_SESSION["id"]]);
+        $result["geslo2"] = $result["geslo"];
+        
+        $_SESSION["uid"] = $_SESSION["id"];
+        $_SESSION["uname"] = $result["uporabnisko_ime"];
+        $form = new OsebaForm('registracija', $result, "profil");
+        echo ViewHelper::render("view/admin-profile.php", ["form" => $form]);
+       
+    }
+    
+    public static function profile($data = []) {
+        
+        if (self::checkValues($data)) {
+            UsersDB::updateUser($data);
+        }
+        echo ViewHelper::redirect(BASE_URL . "profile");
+        
+    }
+    
     public static function updateUserForm($values = ["ime" => "", "priimek" => "",
         "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => ""]){
         
@@ -61,12 +82,13 @@ class AdminController {
             $result = UsersDB::getSalesman($data);
             $result["geslo2"] = $result["geslo"];
             $_SESSION["uid"] = $data["id"];
-            $form = new OsebaForm('registracija', $result);
+            $_SESSION["uname"] = $result["uporabnisko_ime"];
+            $form = new OsebaForm('registracija', $result, "spreminjanje");
             echo ViewHelper::render("view/admin-user-edit.php", ["form" => $form]);
         }
         else {
             $values["geslo2"] = $values["geslo"];
-            $form = new OsebaForm('registracija', $values);
+            $form = new OsebaForm('registracija', $values, "spreminjanje");
             echo ViewHelper::render("view/admin-user-edit.php", ["form" => $form]);
         }
     }
@@ -76,7 +98,7 @@ class AdminController {
         if (self::checkValues($data)) {
             UsersDB::updateUser($data);
         }
-        echo ViewHelper::redirect(BASE_URL . "admin/users");
+        echo ViewHelper::redirect(BASE_URL . "users");
          
     }
     
@@ -84,7 +106,7 @@ class AdminController {
         "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => ""]) {
         $values["geslo"] = "";
         $values["geslo2"] = "";
-        $form = new OsebaForm('registracija', $values);
+        $form = new OsebaForm('registracija', $values, "dodajanje");
         echo ViewHelper::render("view/admin-user-add.php", ["form" => $form]);
     }
     
@@ -94,7 +116,7 @@ class AdminController {
         // enako je treba če urejamo podatke
         if (self::checkValues($data)) {
             UsersDB::insertUser($data);
-            echo ViewHelper::redirect(BASE_URL . "admin/users");
+            echo ViewHelper::redirect(BASE_URL . "users");
         } else {
             //sicer prikažemo obrazec, ki ni uspel
             self::addUserForm();

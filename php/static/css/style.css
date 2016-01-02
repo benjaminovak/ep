@@ -32,6 +32,10 @@
     color: #000;
 }
 
+#products{
+    padding-top: 3em;
+}
+
 #cart {
     padding: 1em;
     position: fixed;
@@ -49,7 +53,10 @@ body {
 
 body {
 	padding: 0px;
-        margin: 0;
+     margin: 0;
+     /* background: url(background.jpg);
+	background-attachment: fixed;
+	background-size: 100%;*/
 	background-color: #F6E3CE;
 }
 #p1{
@@ -75,8 +82,8 @@ body {
 	table-layout: fixed;
 }
 img.img-responsive{
-	display:table-cell;
-	max-width:00%;
+	display: table-cell;
+	max-width: 100%;
 }
 .pozdrav{
 	color: #FFFFFF;
@@ -86,6 +93,10 @@ img.img-responsive{
 	color: #FFFFFF;
 	margin: 20px;
 	font-size: 24px;
+}
+.logo{
+	width: 100%;
+	margin-top: 0px;
 }
 
 #menu{
@@ -99,7 +110,7 @@ img.img-responsive{
     background-color: #F6E3CE;
 }
 .navbar-default .navbar-nav > .active > a:hover{
-    color: #FFFFFF;
+	color: #FFFFFF;
     background-color: #2f76a7;
     border-color: #FFFFFF;
 }
@@ -107,8 +118,6 @@ img.img-responsive{
 #glava {
 	background-color: #2f76a7;
 }
-
-
 #k{
 	background-color: #F2F2F2;
 }
@@ -133,3 +142,70 @@ img.img-responsive{
 span.tab{
     padding: 0 3%;
 }
+
+
+
+
+.btn-info {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  padding: 10px 16px;
+}
+
+.btn-info {
+  color: #fff;
+  background-color: #428bca;
+  border-color: 2px solid white;
+}
+
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:active,
+.btn-info.active,
+
+
+.btn-info.outline {
+    background: none;
+    padding: 5px 10px;
+    border: 2px solid white;
+    color: white;
+}
+.btn-info.outline:hover, .btn-info.outline:focus, .btn-info.outline:active, .btn-info.outline.active {
+    color: #33a6cc;
+    border-color: 2px solid white;
+}
+.btn-info.outline:active, .btn-info.outline.active {
+    border-color: 2px solid white;
+    color: #007299;
+    box-shadow: none;
+}
+
+/***********************
+  CUSTON BTN-INFO VALUES
+************************/
+.btn-info {
+    padding: 5px 10px;
+    border: 2 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.btn-info:focus, .btn-info:active:focus, .btn-info.active:focus {
+    outline: 0 none;
+}
+

@@ -1,6 +1,7 @@
 1. Gesla za uvoz certifikatov: ep (za vse certifikate)
 2. Uporabniška imena in gesla za administratorja, prodajalce in stranke:
 - admin - admin
+- beni	- benjamin
 
 3. Dodatni koraki,ki so potrebni, da se implementacije zažene:
 - Certifikati:
