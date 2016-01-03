@@ -122,6 +122,27 @@ $urls = [
             ViewHelper::redirect(BASE_URL);
         }
     },
+    "products/images" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
+            SalesmanController::images();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "products/image/add" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
+            SalesmanController::imageAdd();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "products/images/del" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
+            SalesmanController::imageDelete();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
     "users" => function(){
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "salesman"){
             SalesmanController::users();

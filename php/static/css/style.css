@@ -53,10 +53,7 @@ body {
 
 body {
 	padding: 0px;
-     margin: 0;
-     /* background: url(background.jpg);
-	background-attachment: fixed;
-	background-size: 100%;*/
+        margin: 0;
 	background-color: #F6E3CE;
 }
 #p1{
@@ -83,7 +80,13 @@ body {
 }
 img.img-responsive{
 	display: table-cell;
-	max-width: 100%;
+	width: 100%;
+}
+img.img-responsive2{
+	display: table-cell;
+	width: 100%;
+        max-height: 200px;
+        clip: rect(0px, 500px,200px,0px);
 }
 .pozdrav{
 	color: #FFFFFF;
@@ -208,4 +211,26 @@ span.tab{
 .btn-info:focus, .btn-info:active:focus, .btn-info.active:focus {
     outline: 0 none;
 }
+
+.portfolio-item {
+    margin-bottom: 25px;
+    padding: 10px; 
+    padding-bottom: 0px;
+    min-height : 50vh;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.portfolio-img {
+    margin-bottom: 25px;
+    padding: 10px; 
+    padding-bottom: 0px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+footer {
+    margin: 50px 0;
+}
+
 

@@ -1,6 +1,7 @@
 <?php
 
 require_once("../model/UsersDB.php");
+require_once("../model/ImagesDB.php");
 require_once("../model/OrdersDB.php");
 require_once("../model/ProductsDB.php");
 require_once("../model/OsebaForm.php");
@@ -291,6 +292,71 @@ class SalesmanController {
         }
     }
     
+    /*Obrazec za dodajanje in brisanje slik za izdelek*/
+    public static function images() {
+        
+        $rules = [
+            "id" => [   
+                'filter' => FILTER_VALIDATE_INT,
+                'options' => ['min_range' => 1]
+            ]
+        ];
+ 
+        $data = filter_input_array(INPUT_POST, $rules);      
+        
+        if (self::checkValues($data)) {
+            echo ViewHelper::render("view/salesman-images-edit.php", 
+                ["izdelek_id" => $data["id"], "images" => ImagesDB::getProdutAll(["izdelek_id" => $data["id"]])]);
+        }
+        elseif (isset ($_SESSION["izdelek_id"])) {
+            echo ViewHelper::render("view/salesman-images-edit.php", 
+                ["izdelek_id" => $_SESSION["izdelek_id"], 
+                    "images" => ImagesDB::getProdutAll(["izdelek_id" => $_SESSION["izdelek_id"]])]);
+        }
+        else {
+            ViewHelper::redirect(BASE_URL. "products");
+        }
+    }
+    
+    /*Dodajanje slike*/
+    public static function imageDelete() {
+        
+        $rules = [
+            "id" => [   
+                'filter' => FILTER_VALIDATE_INT,
+                'options' => ['min_range' => 1]
+            ],
+            "izdelek_id" => [   
+                'filter' => FILTER_VALIDATE_INT,
+                'options' => ['min_range' => 1]
+            ]
+        ];
+ 
+        $data = filter_input_array(INPUT_GET, $rules);
+        
+        if (self::checkValues($data)) {
+            ImagesDB::delete($data);
+            $_SESSION["izdelek_id"] = $data["izdelek_id"];
+            echo ViewHelper::redirect(BASE_URL . "products/images");
+        } else {
+            echo ViewHelper::redirect(BASE_URL);
+        }
+        
+    }
+    
+    /*Brisanje slike*/
+    public static function imageAdd($data = []) {
+        
+        if (self::checkValues($data)) {
+            ImagesDB::insert($data);
+            var_dump("imageAddKonec");
+            $_SESSION["izdelek_id"] = $data["izdelek_id"];
+            echo ViewHelper::redirect(BASE_URL . "products/images");
+        } else {
+            echo ViewHelper::redirect(BASE_URL);
+        }
+        
+    }
     /*
      *  
      *  D E L O   Z   S T R A N K A M I

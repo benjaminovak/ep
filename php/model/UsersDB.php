@@ -149,12 +149,11 @@ class UsersDB extends AbstractDB {
             $params["aktiven"] = "da";
         } else {
             $params["aktiven"] = "ne";
-        }
-        if(PostDB::get(["posta" => $params["posta"]]) == null) {
+        } if(PostDB::get(["posta" => $params["posta"]]) == null) {
             PostDB::insert(["posta" => $params["posta"], "kraj" => $params["kraj"]]);
         } 
         $params["uporabnik_id"] = $_SESSION["uid"];
-        $result = self::update(["ime" => $params["ime"], "priimek" => $params["priimek"], 
+        self::update(["ime" => $params["ime"], "priimek" => $params["priimek"], 
             "mail" => $params["mail"], "uporabnisko_ime" => $params["uporabnisko_ime"], 
             "geslo" => $params["geslo"], "aktiven" => $params["aktiven"], "id" => $params["uporabnik_id"]]); 
         return parent::modify("UPDATE stranka SET uporabnik_id = :uporabnik_id, telefon = :telefon, "
