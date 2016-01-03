@@ -309,27 +309,27 @@ class SalesmanController {
     public static function profileForm() {
         $result = UsersDB::getSalesman(["id" => $_SESSION["id"]]);
         $result["geslo2"] = $result["geslo"];
-        $result["stranka"] = true;
         $_SESSION["uid"] = $_SESSION["id"];
         $_SESSION["uname"] = $result["uporabnisko_ime"];
         $form = new OsebaForm('registracija', $result, "profil");
         echo ViewHelper::render("view/salesman-profile.php", ["form" => $form]);
-       
     }
     
     /*Posodabljanje profila*/
     public static function profile($data = []) {
         
         if (self::checkValues($data)) {
+            $data["aktiven"] = "da";
             UsersDB::updateUser($data);
         }
-        echo ViewHelper::redirect(BASE_URL . "profile");
+        echo("Uspešno posodobljen profil.");
         
     }
     
     /*Posodabljanje uporabnika Stranka - forma*/
     public static function updateUserForm($values = ["ime" => "", "priimek" => "",
-        "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => ""]){
+        "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => "",
+        "telefon" => "", "ulica" => "", "stevilka" => "", "posta" => "", "kraj" => ""]){
         
         $rules = [
             "id" => [   
@@ -340,20 +340,20 @@ class SalesmanController {
  
         $data = filter_input_array(INPUT_POST, $rules);
 
-        if (self::checkValues($data)) { 
-            $result = UsersDB::getAllCustomer($data);
-            $result["geslo2"] = $result["geslo"];
-            $result["stranka"] = true;
+        if (self::checkValues($data)) {
+            $result = UsersDB::getCustomer($data);
             $_SESSION["uid"] = $data["id"];
             $_SESSION["uname"] = $result["uporabnisko_ime"];
-            $form = new OsebaForm('registracija', $result, "spreminjanje");
-            echo ViewHelper::render("view/salesman-user-edit.php", ["form" => $form]);
+        } else {
+            $result = UsersDB::getCustomer(["id" => $_SESSION["uid"]]);
         }
-        else {
-            $values["geslo2"] = $values["geslo"];
-            $form = new OsebaForm('registracija', $values, "spreminjanje");
-            echo ViewHelper::render("view/salesman-user-edit.php", ["form" => $form]);
-        }
+       
+        $result["geslo2"] = $result["geslo"];
+        $result["stranka"] = true;
+        
+        $form = new OsebaForm('registracija', $result, "spreminjanje");
+        echo ViewHelper::render("view/salesman-user-edit.php", ["form" => $form]);
+        
     }
     
     /*Posodabljanje uporabnika Stranka*/
@@ -361,14 +361,17 @@ class SalesmanController {
 
         if (self::checkValues($data)) {
             UsersDB::updateCustomer($data);
+            echo ViewHelper::redirect(BASE_URL . "users");
+        } else {
+            self::updateUserForm();
         }
-        echo ViewHelper::redirect(BASE_URL . "users");
-         
+        
     }
     
     /*Dodajanje uporabnika Stranka - forma*/
     public static function addUserForm($values = ["ime" => "", "priimek" => "",
-        "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => ""]) {
+        "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => "",
+        "telefon" => "", "ulica" => "", "stevilka" => "", "posta" => "", "kraj" => ""]) {
         $values["geslo"] = "";
         $values["geslo2"] = "";
         $values["stranka"] = true;

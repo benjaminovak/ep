@@ -1,6 +1,7 @@
 <?php
 
 require_once 'AbstractDB.php';
+require_once 'PostDB.php';
 
 class UsersDB extends AbstractDB {
 
@@ -120,9 +121,9 @@ class UsersDB extends AbstractDB {
     
     public static function getCustomer(array $id) {
         $uporabnik = parent::query("SELECT *"
-                        . " FROM uporabnik, stranka"
-                        . " WHERE uporabnik.id = stranka.uporabnik_id AND stranka.id = :id"
-                        . " ORDER BY id ASC", $id);
+                        . " FROM uporabnik, stranka, posta"
+                        . " WHERE uporabnik.id = stranka.uporabnik_id AND stranka.posta_id = posta.posta"
+                        ." AND uporabnik.id = :id ORDER BY id ASC", $id);
         if (count($uporabnik) == 1) {
             return $uporabnik[0];
         } else {
@@ -149,14 +150,21 @@ class UsersDB extends AbstractDB {
         } else {
             $params["aktiven"] = "ne";
         }
-        $params["id"] = $_SESSION["uid"];
-        $result = self::update($params);  
-        return $result;
+        if(PostDB::get(["posta" => $params["posta"]]) == null) {
+            PostDB::insert(["posta" => $params["posta"], "kraj" => $params["kraj"]]);
+        } 
+        $params["uporabnik_id"] = $_SESSION["uid"];
+        $result = self::update(["ime" => $params["ime"], "priimek" => $params["priimek"], 
+            "mail" => $params["mail"], "uporabnisko_ime" => $params["uporabnisko_ime"], 
+            "geslo" => $params["geslo"], "aktiven" => $params["aktiven"], "id" => $params["uporabnik_id"]]); 
+        return parent::modify("UPDATE stranka SET uporabnik_id = :uporabnik_id, telefon = :telefon, "
+                        ."ulica = :ulica, stevilka = :stevilka, posta_id = :posta_id"
+                        . " WHERE uporabnik_id = :id", ["uporabnik_id" => $params["uporabnik_id"], "telefon" => $params["telefon"],
+                                "ulica" => $params["ulica"], "stevilka"=> $params["stevilka"], "posta_id" => $params["posta"], "id" =>  $params["uporabnik_id"]]);
     }
     
     //Ustavljanje stranke
     public static function insertCustomer(array $params) {
-        unset($params["geslo2"]);
         $options = array("cost" => 10);
         $params["geslo"] = password_hash($params["geslo"], PASSWORD_BCRYPT, $options);
         if($params["aktiven"] == 1){
@@ -164,9 +172,19 @@ class UsersDB extends AbstractDB {
         } else {
             $params["aktiven"] = "ne";
         }
-        $result = self::insert($params);
-        return parent::modify("INSERT INTO stranka (uporabnik_id) "
-                        . " VALUES (:uporabnik_id)",["uporabnik_id" => $result]);
+        if(PostDB::get(["posta" => $params["posta"]]) == null) {
+            $posta = PostDB::insert(["posta" => $params["posta"], "kraj" => $params["kraj"]]);
+        } else {
+            $posta = $params["posta"];
+        }
+        $result = self::insert(["ime" => $params["ime"], "priimek" => $params["priimek"], 
+            "mail" => $params["mail"], "uporabnisko_ime" => $params["uporabnisko_ime"], 
+            "geslo" => $params["geslo"], "aktiven" => $params["aktiven"]]);
+        var_dump($result, $params, ["uporabnik_id" => $result, "telefon" => $params["telefon"], "ulica" => $params["ulica"], "stevilka"=> $params["stevilka"], "posta_id" => $posta]);
+        return parent::modify("INSERT INTO stranka (uporabnik_id, telefon, ulica, stevilka, posta_id) "
+                        . " VALUES (:uporabnik_id, :telefon, :ulica, :stevilka, :posta_id)",
+                            ["uporabnik_id" => $result, "telefon" => $params["telefon"], "ulica" => $params["ulica"], 
+                                "stevilka"=> $params["stevilka"], "posta_id" => $posta]);
         
     }
     /*

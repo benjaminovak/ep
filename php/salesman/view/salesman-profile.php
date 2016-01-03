@@ -5,7 +5,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="<?= str_replace("index.php/", "/static/css/style.css", BASE_URL) ?>" />
+       <link rel="stylesheet" type="text/css" href="<?= str_replace("index.php/", "../static/css/style.css", BASE_URL) ?>" />
         <title>Prodajalec</title>
     </head>
     <body>
@@ -13,7 +13,7 @@
         <div class="wrapper col-lg-12 col-md-12 col-sm-12">
             <div class="navbar-inner">
                  <div class="container">
-                    <img src="<?= str_replace("index.php/", "static/images/logo.png", BASE_URL) ?>" class="img-rounded" width="100%"/></center>
+                    <img src="<?= str_replace("index.php/", "../static/images/logo.png", BASE_URL) ?>" class="img-rounded" width="100%"/></center>
                  </div>
             </div>
             <div class="container">
@@ -60,9 +60,9 @@
                                             if ($form->isSubmitted() && $form->validate()) {
                                                 try {
                                                     $data = $form->getValue();
-                                                    AdminController::profile($data);
+                                                    SalesmanController::profile($data);
                                                 } catch (PDOException $exc) {
-                                                    AdminController::profile();
+                                                    SalesmanController::profile();
                                                 }
                                             } 
                                             else {

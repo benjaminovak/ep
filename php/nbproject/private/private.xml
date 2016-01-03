@@ -4,13 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group/>
         <group name="php">
-            <file>file:/home/ep/NetBeansProjects/seminarska/model/AbstractDB.php</file>
-            <file>file:/home/ep/NetBeansProjects/seminarska/admin/index.php</file>
-            <file>file:/home/ep/NetBeansProjects/seminarska/model/OrdersDB.php</file>
-            <file>file:/home/ep/NetBeansProjects/seminarska/salesman/index.php</file>
-            <file>file:/home/ep/NetBeansProjects/seminarska/salesman/controller/SalesmanController.php</file>
-            <file>file:/home/ep/NetBeansProjects/seminarska/salesman/view/salesman-order-detail.php</file>
-            <file>file:/home/ep/NetBeansProjects/seminarska/admin/controller/AdminController.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/view/salesman-profile.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/admin/view/admin-profile.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/index.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/view/salesman-users-list.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/controller/SalesmanController.php</file>
         </group>
     </open-files>
 </project-private>

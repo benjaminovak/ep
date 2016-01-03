@@ -19,6 +19,11 @@ class OsebaForm extends HTML_QuickForm2 {
     public $geslo;
     public $geslo2;
     public $aktiven;
+    public $telefon;
+    public $ulica;
+    public $stevilka;
+    public $posta;
+    public $kraj;
     public $gumb;
 
 
@@ -84,6 +89,48 @@ class OsebaForm extends HTML_QuickForm2 {
         $this->geslo2->addRule('required', 'Ponovno vpišite izbrano geslo.');
         $this->geslo2->addRule('eq', 'Gesli nista enaki.', $this->geslo);
         
+        // če je oseba stranka more imetu tudi telefon in pošto
+        if(isset($values["stranka"])){
+            $this->telefon = new HTML_QuickForm2_Element_InputText('telefon');
+            $this->telefon->setAttribute('size', "100%");
+            $this->telefon->setLabel('Mobilni telefon:');
+            $this->telefon->setValue($values["telefon"]);
+            $this->telefon->addRule('required', 'Vnesite telefonsko številko.');
+            $this->telefon->addRule('regex', 'Pri telefonski številki uporabite le številke ločene s presledkom (npr. 031 123 456).', '/^(070|051|050|041|040|031) [0-9]{3} [0-9]{3}$/');
+            $this->telefon->addRule('maxlength', 'Telefonska številka naj bo krajši od 9 številk in 2 presledka.', 11);
+            
+            $this->ulica = new HTML_QuickForm2_Element_InputText('ulica');
+            $this->ulica->setAttribute('size', "100%");
+            $this->ulica->setLabel('Ulica:');
+            $this->ulica->setValue($values["ulica"]);
+            $this->ulica->addRule('required', 'Vnesite ulico bivanja.');
+            $this->ulica->addRule('regex', 'Pri vnosu ulice uporabite le črke.', '/^[a-zA-ZščćžŠČĆŽ ]+$/');
+            $this->ulica->addRule('maxlength', ' naj bo krajši od 75 znakov.', 75);
+            
+            $this->stevilka = new HTML_QuickForm2_Element_InputText('stevilka');
+            $this->stevilka->setAttribute('size', "100%");
+            $this->stevilka->setLabel('Hišna številka:');
+            $this->stevilka->setValue($values["stevilka"]);
+            $this->stevilka->addRule('required', 'Vnesite hišno številko.');
+            $this->stevilka->addRule('regex', 'Pri hišni številki uporabite le številke in črke.', '/^[a-zA-ZščćžŠČĆŽ 0-9 ]+$/');
+            $this->stevilka->addRule('maxlength', 'Telefonska številka naj bo krajši od 10 znakov.', 10);
+            
+            $this->posta = new HTML_QuickForm2_Element_InputText('posta');
+            $this->posta->setAttribute('size', "100%");
+            $this->posta->setLabel('Poštna številka');
+            $this->posta->setValue($values["posta"]);
+            $this->posta->addRule('required', 'Vnesi številko pošte.');
+            $this->posta->addRule('regex', 'Le števila med 1000 in 9999.', '/^[1-9][0-9]{3}$/');
+            
+            $this->kraj = new HTML_QuickForm2_Element_InputText('kraj');
+            $this->kraj->setAttribute('size', "100%");
+            $this->kraj->setLabel('Naziv pošte:');
+            $this->kraj->setValue($values["kraj"]);
+            $this->kraj->addRule('required', 'Vnesi kraj pošte.');
+            $this->kraj->addRule('regex', 'Pri kraju uporabite le črke.', '/^[a-zA-ZščćžŠČĆŽ ]+$/');
+            $this->kraj->addRule('maxlength', 'Kraj naj bo krajši od 45 znakov.', 45);
+        }
+        
         if ($action != "profil") {
             $this->aktiven = new HTML_QuickForm2_Element_InputCheckbox('aktiven');
             $this->aktiven->setLabel('Aktiven uporabnik:');
@@ -117,6 +164,13 @@ class OsebaForm extends HTML_QuickForm2 {
         $this->addElement($this->uporabnisko_ime);
         $this->addElement($this->geslo);
         $this->addElement($this->geslo2);
+        if(isset($values["stranka"])){  //dodajanje atributov, ki so samo za stranko
+            $this->addElement($this->telefon);
+            $this->addElement($this->ulica);
+            $this->addElement($this->stevilka);
+            $this->addElement($this->posta);
+            $this->addElement($this->kraj);
+        }
         if ($action != "profil") {
             $this->addElement($this->aktiven);
         }
