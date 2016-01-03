@@ -67,6 +67,8 @@
                                                     <th>Priimek</th>
                                                     <th>Email</th>
                                                     <th>Uporabniško ime</th>
+                                                    <th>Telefon</th>
+                                                    <th>Naslov</th>
                                                     <th>Aktiven</th>
                                                     <th></th>
                                                   </tr>
@@ -78,6 +80,8 @@
                                                         <th><?=$user["priimek"]?></th>
                                                         <th><?=$user["mail"]?></th>
                                                         <th><?=$user["uporabnisko_ime"]?></th>
+                                                        <th><?=$user["telefon"]?></th>
+                                                        <th><?=$user["ulica"] . " ".$user["stevilka"] ?></th>
                                                         <th><?=$user["aktiven"]?></th>
                                                         <th>
                                                             <form action="<?= BASE_URL. "users/edit" ?>" method="POST">
