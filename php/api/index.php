@@ -5,8 +5,8 @@ require_once '../model/ProductsDB.php';
 header('Content-Type: application/json');
 
 $http_method = filter_input(INPUT_SERVER, "REQUEST_METHOD", FILTER_SANITIZE_SPECIAL_CHARS); #preberemo katera je http metoda
-$server_addr = filter_input(INPUT_SERVER, "SERVER_ADDR", FILTER_SANITIZE_SPECIAL_CHARS);
-//$server_addr = "10.0.2.2:8080"; // kadar dostopamo preko Android emulatorja, ce damo virtualko na bridge interface ali preko telefona tega ne rabimo
+//$server_addr = filter_input(INPUT_SERVER, "SERVER_ADDR", FILTER_SANITIZE_SPECIAL_CHARS);
+$server_addr = "10.0.2.2"; // kadar dostopamo preko Android emulatorja, ce damo virtualko na bridge interface ali preko telefona tega ne rabimo
 $php_self = filter_input(INPUT_SERVER, "PHP_SELF", FILTER_SANITIZE_SPECIAL_CHARS);
 $script_uri = substr($php_self, 0, strripos($php_self, "/")); # naslov skripte, ki se izvaja
 $request = filter_input(INPUT_GET, "request", FILTER_SANITIZE_SPECIAL_CHARS); 
