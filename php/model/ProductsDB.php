@@ -54,7 +54,7 @@ class ProductsDB extends AbstractDB {
     }
 
     public static function getAllActive() {
-        return parent::query("SELECT *"
+        return parent::query("SELECT id, naziv, cena "
                         . " FROM izdelek WHERE aktiven = 'da'"
                         . " ORDER BY id ASC");
     }
