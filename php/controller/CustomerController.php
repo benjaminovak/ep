@@ -23,7 +23,8 @@ class CustomerController {
             $username = $data["uname"];            
             $result = UsersDB::getPassword(["uporabnisko_ime" => $username]);
             
-            if ($result != null && password_verify($data["password"], $result["geslo"]) && UsersDB::isCustomer(["uporabnik_id" => $result["id"]]) == 1) {
+            if ($result != null && password_verify($data["password"], $result["geslo"]) && 
+                    UsersDB::isCustomer(["uporabnik_id" => $result["id"]]) && UsersDB::isactivate(["id" => $result["id"]])) {
                 $_SESSION["active"] = TRUE;
                 $_SESSION["role"] = "customer";
                 $_SESSION["id"] = $result["id"];

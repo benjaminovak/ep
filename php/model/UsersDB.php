@@ -38,6 +38,14 @@ class UsersDB extends AbstractDB {
                         . " ORDER BY id ASC");
     }
     
+    // pogleda če uporabnik aktiven
+    public static function isActivate(array $id) {
+        $product = parent::query("SELECT aktiven"
+                        . " FROM uporabnik"
+                        . " WHERE id = :id", $id);
+        return $product[0]["aktiven"] == "da";
+    }
+    
     
     /*
     *  P O I Z V E D O V A N J E   P O   P R O D A J A L C I H
