@@ -25,13 +25,13 @@
                               <ul class="nav navbar-nav">
                                 <li class="active"><a href="<?= BASE_URL. "customer"?>">Izdelki</a></li>
                               </ul>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4"> 
+                            </div> 
+                            <div class="col-lg-4 col-md-4 col-sm-4">
                               <ul class="nav navbar-nav">
                                 <?php if(isset($_SESSION["CART"])):?>
-                                    <li class="cart"><a href="<?= BASE_URL."customer/cart"  ?>">Košarica</a></li>
+                                    <li class="cart"><a href="<?= BASE_URL."customer/cart"?>">Košarica</a></li>
                                 <?php else: ?>
-                                    <li><a href="<?= BASE_URL."customer/cart"  ?>">Košarica</a></li>
+                                    <li><a href="<?= BASE_URL."customer/cart"?>">Košarica</a></li>
                                 <?php endif; ?>
                                 <li><a href="<?= BASE_URL."customer/profil" ?>">Moj račun</a></li>
                                 <li><a href="<?= BASE_URL."customer/logout" ?>">Odjava</a></li>
@@ -49,7 +49,49 @@
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <b><span class="pozdrav">Izdelki</span></b>
+                                            <b><span class="pozdrav">Izdelek <?= $product["naziv"] ?></span></b>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        <a href="<?= BASE_URL?>" type="button" class="btn btn-info btn-sm" id="back">Nazaj</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="container-fluid">
+                                    <div class="row-fluid">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <p class="text-left"><?= $product["opis"]?></p>
+                                            <hr>
+                                            <div class="col-md-12">
+                                                <div class="col-md-2">
+                                                    <form action="<?= BASE_URL."customer/product/detail?id=".$product["id"]?>" method="POST">
+                                                        <input type="hidden" name="do" value="add_into_cart" />
+                                                        <input type="hidden" name="id" value="<?= $product["id"] ?>" />
+                                                        <input type="submit" class="btn btn-danger btn-sm btn-block" value="Dodaj v košarico" />
+                                                    </form>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <p class="text-right" style="font-size: 20px">Cena: <?= number_format($product["cena"],2, ',', '.')?> €</p>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="glava">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <b><span class="pozdrav">Slike</span></b>
                                     </div>
                                 </div>
                             </div>
@@ -59,36 +101,13 @@
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <?php 
                                                     $i = 1;
-                                                    foreach ($products as $product): 
-                                                    $url = BASE_URL. "customer/product/detail?id=".$product["id"];?>
+                                                    foreach ($images as $image): 
+                                                    $url = BASE_URL. "product/detail?id=".$product["id"];?>
                                                         <?php if($i % 3 == 1):?>
                                                             <div class="row">
                                                         <?php endif; ?>
-                                                            <div class="col-md-4 portfolio-item">
-                                                                <a href="<?= $url ?>">
-                                                                    <?php if($images[$product["id"]] != null):
-                                                                        echo '<img class="img-responsive2" src="data:image;base64,'.$images[$product["id"]]["slika"].'" >'?>
-                                                                    <?php else: ?>
-                                                                        <img class="img-responsive2" src="http://placehold.it/700x400" alt="">
-                                                                    <?php endif; ?>
-                                                                </a>
-                                                                <h4>
-                                                                    <a href="<?= $url ?>"><?= $product["naziv"] ?> </a>
-                                                                </h4>
-                                                                <p><?= $product["opis"] ?></p>
-                                                                <hr>
-                                                                <div class="col-md-12">
-                                                                    <div class="col-md-6">
-                                                                        <p style="font-size: 18px;">Cena: <?= $product["cena"] ?> €</p> 
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <form action="<?= BASE_URL."customer" ?>" method="POST">
-                                                                            <input type="hidden" name="do" value="add_into_cart" />
-                                                                            <input type="hidden" name="id" value="<?= $product["id"] ?>" />
-                                                                            <input type="submit" class="btn btn-danger btn-sm btn-block" value="Dodaj v košarico" />
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
+                                                            <div class="col-md-4 portfolio-gallery">
+                                                                <?php echo '<img class="img-responsive" src="data:image;base64,'.$image["slika"].'" >';?>
                                                             </div>
                                                         <?php if($i % 3 == 0):?>
                                                             </div>
@@ -96,9 +115,10 @@
                                                 <?php
                                                     $i += 1;
                                                     endforeach; ?>
-                                                <?php if($i % 3 != 1):?>
-                                                    </div>
-                                                <?php endif; ?>
+                                                        <?php if($i % 3 != 1):?>
+                                                            </div>
+                                                        <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -107,6 +127,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </body>
 </html>

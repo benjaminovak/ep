@@ -106,12 +106,18 @@ img.img-responsive2{
 	background-color: #dac5a4;
 	font-family: 'Open Sans';
 }
-
+.navbar-default .navbar-nav > .cart > a, 
+.navbar-default .navbar-nav > .cart > a:focus {
+    color:#fff;
+    background-color:#d9534f;
+    border-color:#d43f3a
+}
 .navbar-default .navbar-nav > .active > a, 
 .navbar-default .navbar-nav > .active > a:focus {
     color: #555;
     background-color: #F6E3CE;
 }
+
 .navbar-default .navbar-nav > .active > a:hover{
 	color: #FFFFFF;
     background-color: #2f76a7;
@@ -217,6 +223,12 @@ span.tab{
     padding: 10px; 
     padding-bottom: 0px;
     min-height : 50vh;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.portfolio-gallery {
+    margin-bottom: 25px;
     border: 1px solid #ddd;
     border-radius: 5px;
 }

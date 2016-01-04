@@ -133,7 +133,7 @@ class UsersDB extends AbstractDB {
     
     public static function isCustomer(array $id) {
         $product = parent::query("SELECT uporabnik_id"
-                        . " FROM prodajalec"
+                        . " FROM stranka"
                         . " WHERE uporabnik_id = :uporabnik_id", $id);
         return count($product) == 1;
     }

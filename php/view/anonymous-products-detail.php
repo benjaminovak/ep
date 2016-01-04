@@ -28,7 +28,7 @@
                             </div> 
                             <div class="col-lg-1 col-md-1 col-sm-1">
                               <ul class="nav navbar-nav">
-                                <li><a href="<?= BASE_URL."login" ?>">Prijava</a></li>
+                                <li><a href="<?= BASE_URL."customer/login" ?>">Prijava</a></li>
                               </ul>
                             </div> 
                           </div>
@@ -43,7 +43,38 @@
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <b><span class="pozdrav">Izdelki</span></b>
+                                            <b><span class="pozdrav">Izdelek <?= $product["naziv"] ?></span></b>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        <a href="<?= BASE_URL?>" type="button" class="btn btn-info btn-sm" id="back">Nazaj</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="container-fluid">
+                                    <div class="row-fluid">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <p class="text-left"><?= $product["opis"]?></p>
+                                            <hr>
+                                            <p class="text-right" style="font-size: 20px">Cena: <?= $product["cena"]?> €</p> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="glava">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <b><span class="pozdrav">Slike</span></b>
                                     </div>
                                 </div>
                             </div>
@@ -53,25 +84,13 @@
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <?php 
                                                     $i = 1;
-                                                    foreach ($products as $product): 
+                                                    foreach ($images as $image): 
                                                     $url = BASE_URL. "product/detail?id=".$product["id"];?>
                                                         <?php if($i % 3 == 1):?>
                                                             <div class="row">
                                                         <?php endif; ?>
-                                                            <div class="col-md-4 portfolio-item">
-                                                                <a href="<?= $url ?>">
-                                                                    <?php if($images[$product["id"]] != null):
-                                                                        echo '<img class="img-responsive2" src="data:image;base64,'.$images[$product["id"]]["slika"].'" >'?>
-                                                                    <?php else: ?>
-                                                                        <img class="img-responsive2" src="http://placehold.it/700x400" alt="">
-                                                                    <?php endif; ?>
-                                                                </a>
-                                                                <h4>
-                                                                    <a href="<?= $url ?>"><?= $product["naziv"] ?> </a>
-                                                                </h4>
-                                                                <p><?= $product["opis"] ?></p>
-                                                                <hr>
-                                                                <p style="font-size: 18px;">Cena: <?= $product["cena"] ?> €</p>
+                                                            <div class="col-md-4 portfolio-gallery">
+                                                                <?php echo '<img class="img-responsive" src="data:image;base64,'.$image["slika"].'" >';?>
                                                             </div>
                                                         <?php if($i % 3 == 0):?>
                                                             </div>
@@ -79,9 +98,10 @@
                                                 <?php
                                                     $i += 1;
                                                     endforeach; ?>
-                                                <?php if($i % 3 != 1):?>
-                                                    </div>
-                                                <?php endif; ?>
+                                                        <?php if($i % 3 != 1):?>
+                                                            </div>
+                                                        <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -90,6 +110,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </body>
 </html>

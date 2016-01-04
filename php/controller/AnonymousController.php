@@ -23,6 +23,22 @@ class AnonymousController {
         
     }
     
+    public static function productsDetail() {
+        
+        $data = filter_input_array(INPUT_GET, self::getIdRules());
+     
+        if (self::checkValues($data)) {
+            $product = ProductsDB::get($data);
+            $images = ImagesDB::getProdutAll(["izdelek_id" => $product["id"]]);
+            echo ViewHelper::render("view/anonymous-products-detail.php", [
+                "product" => $product, "images" => $images
+            ]);
+        } else {
+            ViewHelper::redirect(BASE_URL);
+        }
+        
+    }
+    
     /*
     *  
     *  P R E V E R J A N J E   V H O D O V
@@ -48,4 +64,12 @@ class AnonymousController {
         ];
     }
     
+    private static function getIdRules() {
+        return [
+                "id" => [   
+                    'filter' => FILTER_VALIDATE_INT,
+                    'options' => ['min_range' => 1]
+                    ]
+                ];
+    }
 }

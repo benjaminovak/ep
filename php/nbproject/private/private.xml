@@ -4,11 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group/>
         <group name="php">
-            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/view/salesman-profile.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/admin/view/admin-profile.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/index.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/view/salesman-users-list.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/controller/SalesmanController.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/index.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/controller/CustomerController.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/view/customer-products-list.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/model/UsersDB.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/view/anonymous-products-detail.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/controller/AnonymousController.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/view/anonymous-products-list.php</file>
         </group>
     </open-files>
 </project-private>

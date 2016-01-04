@@ -28,7 +28,7 @@
                             </div> 
                             <div class="col-lg-1 col-md-1 col-sm-1">
                               <ul class="nav navbar-nav">
-                                <li><a href="<?= BASE_URL."login" ?>">Prijava</a></li>
+                                <li><a href="<?= BASE_URL."customer/login" ?>">Prijava</a></li>
                               </ul>
                             </div> 
                           </div>

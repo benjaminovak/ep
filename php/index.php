@@ -20,46 +20,60 @@ $urls = [
             AnonymousController::products(); 
         }
     },
-    "login" => function(){
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    "customer/login" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            ViewHelper::redirect(BASE_URL . "customer");
+        }
+        elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
             CustomerController::check(); 
         } else {
             CustomerController::login(); 
         }
     }, 
-    "logout" => function(){
+    "customer/logout" => function(){
         session_unset();
         ViewHelper::redirect(BASE_URL);
     }, 
-    "users" => function(){
+    "product/detail" => function(){
+        
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
-            CustomerController::users();
+            ViewHelper::redirect(BASE_URL . "customer");
+        } else{
+            AnonymousController::productsDetail();
+        }
+    },
+    "customer" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                CustomerController::addToCart("list"); 
+            } else {
+                CustomerController::products();
+            } 
         } else{
             ViewHelper::redirect(BASE_URL);
         }
     },
-    "profile" => function() {
+    "customer/product/detail" => function(){
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
-            CustomerController::profileForm();
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                CustomerController::addToCart(); 
+            } else {
+                CustomerController::productsDetail();
+            }
         } else{
-            unset($_SESSION["uid"]);
-            unset($_SESSION["uname"]);
-            ViewHelper::redirect(BASE_URL);
-        } 
-    },
-    "users/edit" => function(){
-        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
-            CustomerController::updateUserForm();
-        } else{
-            unset($_SESSION["uid"]);
-            unset($_SESSION["uname"]);
+ 
             ViewHelper::redirect(BASE_URL);
         }
-    }, 
-    "users/add" => function(){
+    },
+    "customer/cart"  => function(){
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
-            CustomerController::addUserForm();
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                CustomerController::addToCart(); 
+            } else {
+                CustomerController::cart();
+            }
         } else{
+ 
             ViewHelper::redirect(BASE_URL);
         }
     },
@@ -73,7 +87,7 @@ try {
         echo "No controller for '$path'";
     }
 } catch (InvalidArgumentException $e) {
-    var_dump($urls);
+    var_dump($urls, $path);
     ViewHelper::error404();
 } catch (Exception $e) {
     echo "An error occurred: <pre>$e</pre>";
