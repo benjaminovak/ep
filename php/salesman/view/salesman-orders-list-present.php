@@ -60,6 +60,7 @@
                                 <div class="container-fluid">
                                     <div class="row-fluid">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <?php if(!empty($orders)):?>
                                             <table class="table table-hover">
                                                 <thead>
                                                   <tr>
@@ -92,9 +93,12 @@
                                                             </form>
                                                         </th>
                                                     </tr>
-                                                <?php endforeach; ?>
-                                                 </tbody>
-                                                </table>
+                                                <?php endforeach;?>
+                                                </tbody>
+                                            </table>
+                                            <?php else:
+                                                echo "Ni obdelanih naročil.";
+                                            endif;?>
                                         </div>
                                     </div>
                                 </div>

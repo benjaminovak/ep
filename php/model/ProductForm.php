@@ -43,6 +43,7 @@ class ProductForm extends HTML_QuickForm2 {
         $this->opis->setAttribute('cols', "98%");
         $this->opis->setLabel('Opis:');
         $this->opis->setValue($values["opis"]);
+        $this->opis->addRule('required', 'Vnesite opis.');
         $this->opis->addRule('maxlength', 'Opis naj bo krajši od 250 znakov.', 250);
         
         if ($action != "profil") {

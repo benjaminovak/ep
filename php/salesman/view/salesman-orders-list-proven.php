@@ -50,7 +50,7 @@
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <b><span class="pozdrav">Seznam obdelanih naročil</span></b>
+                                            <b><span class="pozdrav">Seznam potrjenih naročil</span></b>
                                     </div>
                                 </div>
                             </div>
@@ -59,6 +59,7 @@
                                 <div class="container-fluid">
                                     <div class="row-fluid">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <?php if(!empty($orders)):?>
                                             <table class="table table-hover">
                                                 <thead>
                                                   <tr>
@@ -69,21 +70,24 @@
                                                   </tr>
                                                 </thead>
                                                 <tbody>
-                                                <?php foreach ($orders as $order): ?>
-                                                    <tr>
-                                                        <th><?=$order["id"]?></th>
-                                                        <th><?=$order["uporabnik_id"]?></th>
-                                                        <th><?=$order["datum"]?></th>
-                                                        <th>
-                                                            <form action="<?= BASE_URL. "orders/proven/detail" ?>" method="POST">
-                                                                <input type="hidden" name="id" value="<?= $order["id"] ?>" />
-                                                                <input type="submit" value="Podrobnosti" class="btn btn-default"/>
-                                                            </form>
-                                                        </th>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                                 </tbody>
-                                                </table>
+                                                    <?php foreach ($orders as $order): ?>
+                                                        <tr>
+                                                            <th><?=$order["id"]?></th>
+                                                            <th><?=$order["uporabnik_id"]?></th>
+                                                            <th><?=$order["datum"]?></th>
+                                                            <th>
+                                                                <form action="<?= BASE_URL. "orders/proven/detail" ?>" method="POST">
+                                                                    <input type="hidden" name="id" value="<?= $order["id"] ?>" />
+                                                                    <input type="submit" value="Podrobnosti" class="btn btn-default"/>
+                                                                </form>
+                                                            </th>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                </tbody>
+                                            </table>
+                                            <?php else:
+                                                echo "Ni potrjenih naročil.";
+                                            endif;?>    
                                         </div>
                                     </div>
                                 </div>

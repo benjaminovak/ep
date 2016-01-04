@@ -136,7 +136,7 @@ class SalesmanController {
         
         $data = filter_input_array(INPUT_POST, $rules);
         if($data == null) {
-            $data["id"] = $_SESSION["id"];
+            $data["id"] = $_SESSION["pid"];
         }
         if (self::checkValues($data)) {
             $order = OrdersDB::get($data);
@@ -166,7 +166,7 @@ class SalesmanController {
 
         if (self::checkValues($data)) {
             OrdersDB::updateConfirmation(["potrjeno" => $insert, "id" => $data["id"]]);
-            $_SESSION["id"] = $data["id"];
+            $_SESSION["pid"] = $data["id"];
             ViewHelper::redirect(BASE_URL."orders/present/detail");
            
         }
@@ -207,7 +207,7 @@ class SalesmanController {
         
         $data = filter_input_array(INPUT_POST, $rules);
         if($data == null) {
-            $data["id"] = $_SESSION["id"];
+            $data["id"] = $_SESSION["pid"];
         }
         
         if (self::checkValues($data)) {
@@ -374,10 +374,13 @@ class SalesmanController {
     /*Posodabljanje profila - forma*/
     public static function profileForm() {
         $result = UsersDB::getSalesman(["id" => $_SESSION["id"]]);
+        
         $result["geslo2"] = $result["geslo"];
         $_SESSION["uid"] = $_SESSION["id"];
         $_SESSION["uname"] = $result["uporabnisko_ime"];
+        
         $form = new OsebaForm('registracija', $result, "profil");
+        
         echo ViewHelper::render("view/salesman-profile.php", ["form" => $form]);
     }
     

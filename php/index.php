@@ -73,7 +73,50 @@ $urls = [
                 CustomerController::cart();
             }
         } else{
- 
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "customer/cart/edit" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                CustomerController::edit(); 
+            } else {
+                ViewHelper::redirect(BASE_URL);
+            }
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "customer/cart/delete" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                CustomerController::delete(); 
+            } else {
+                ViewHelper::redirect(BASE_URL);
+            }
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "customer/checkout" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                CustomerController::order();
+            } else {
+                ViewHelper::redirect(BASE_URL."customer/cart");
+            }
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "customer/checkout/order" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                CustomerController::saveOrder();
+            } else {
+                ViewHelper::redirect(BASE_URL."customer/cart");
+            }
+        } else{
             ViewHelper::redirect(BASE_URL);
         }
     },

@@ -50,6 +50,12 @@ class OrdersDB extends AbstractDB {
                         . " AND izdelek_narocilo.narocilo_id = :narocilo_id", $narocilo_id);
     }
     
+    public static function insertOrderProduct($params) {
+        // --- vstavljanje izdelka v narocilo -----
+        return parent::modify("INSERT INTO izdelek_narocilo (kolicina, narocilo_id, izdelek_id) "
+                        . " VALUES (:kolicina, :narocilo_id, :izdelek_id)", $params);
+    }
+    
     public static function getAll() {
         return parent::query("SELECT *"
                         . " FROM narocilo"

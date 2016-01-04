@@ -53,6 +53,11 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                             <b><span class="pozdrav">Podrobnosti neobdelanega naročila <?=$order["id"]?></span></b>
                                     </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        <a href="<?= BASE_URL."orders"?>" type="button" class="btn btn-info btn-sm" id="back">Nazaj</a>
+                                    </div>
                                 </div>
                             </div>
 

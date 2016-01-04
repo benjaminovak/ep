@@ -1,6 +1,7 @@
 <?php
 
 require_once("model/UsersDB.php");
+require_once("model/OrdersDB.php");
 require_once("model/ProductsDB.php");
 require_once("ViewHelper.php");
 
@@ -92,18 +93,96 @@ class CustomerController {
         }
     }
     
-    public static function cart() {
-        
-        $action = filter_input(INPUT_POST, "do", FILTER_SANITIZE_SPECIAL_CHARS);
-        $id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
-        
+    public static function cartProducts(){
+        $izdelki = [];
         foreach($_SESSION["CART"] as $id => $value){
             $izdelki[$id] = ProductsDB::get(["id" => $id]);
-            $izdelki[$id]["skupaj"] = $value;
+            $izdelki[$id]["vseh"] = $value;
+        }
+        return $izdelki;
+    }
+
+
+    public static function cart() {
+        
+        $id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
+        
+        $izdelki = [];
+        if(isset($_SESSION["CART"])){
+            $izdelki = self::cartProducts();
         }
         echo ViewHelper::render("view/customer-cart.php", [
             "products" => $izdelki
         ]);
+        
+    }
+    
+    public static function edit() {
+        
+        $kolicina = filter_input(INPUT_POST, "kolicina", FILTER_VALIDATE_INT);
+        $action = filter_input(INPUT_POST, "do", FILTER_SANITIZE_SPECIAL_CHARS);
+        $id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
+        
+        if ($action == "update_cart") {
+            if ($kolicina > 0) {
+                $_SESSION["CART"][$id] = $kolicina;
+            } else {
+                unset($_SESSION["CART"][$id]);
+                if (empty($_SESSION["CART"])) {
+                    unset($_SESSION["CART"]);
+                }
+            }
+        }
+        ViewHelper::redirect(BASE_URL."customer/cart");
+    }
+    
+    public static function delete() {
+        
+        $action = filter_input(INPUT_POST, "do", FILTER_SANITIZE_SPECIAL_CHARS);
+ 
+        if ($action == "delete_cart"){
+            unset($_SESSION["CART"]);
+        }
+        ViewHelper::redirect(BASE_URL."customer/cart");
+    }
+    
+    public static function order() {
+        
+        $action = filter_input(INPUT_POST, "do", FILTER_SANITIZE_SPECIAL_CHARS);
+        
+        if ($action == "checkout") {
+             $izdelki = [];
+            if(isset($_SESSION["CART"])){
+                $izdelki = self::cartProducts();
+            }
+            echo ViewHelper::render("view/customer-order.php", [
+                "products" => $izdelki
+            ]);
+        } else {
+            ViewHelper::redirect(BASE_URL."customer/cart");
+        }
+       
+    }
+    
+    public static function saveOrder() {
+        
+        $action = filter_input(INPUT_POST, "do", FILTER_SANITIZE_SPECIAL_CHARS);
+        
+        if ($action == "order") {
+            $t=time();
+            $timestamp = date("Y-m-d, H:i:s",$t);
+            $narocil_id = OrdersDB::insert(["uporabnik_id" => $_SESSION["id"], "datum" => $timestamp]);
+            foreach($_SESSION["CART"] as $id => $value){
+                OrdersDB::insertOrderProduct(["kolicina" => $value, "narocilo_id" => $narocil_id, "izdelek_id" => $id]);
+            }
+            if(isset($_SESSION["CART"])) {
+                unset($_SESSION["CART"]);
+            }
+            ViewHelper::redirect(BASE_URL."customer");
+        } else {
+            ViewHelper::redirect(BASE_URL."customer/cart");
+        }
+       
         
     }
     

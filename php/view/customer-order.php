@@ -19,48 +19,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <nav class="navbar navbar-default" id="menu">
-                          <div class="container-fluid">
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                              <ul class="nav navbar-nav">
-                                <li><a href="<?= BASE_URL. "customer"?>">Izdelki</a></li>
-                              </ul>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4"> 
-                              <ul class="nav navbar-nav">
-                                <?php if(isset($_SESSION["CART"])):?>
-                                    <li class="cart"><a href="<?= BASE_URL."customer/cart"  ?>">Košarica</a></li>
-                                <?php else: ?>
-                                    <li class="active"><a href="<?= BASE_URL."customer/cart"  ?>">Košarica</a></li>
-                                <?php endif; ?>
-                                <li><a href="<?= BASE_URL."customer/profil"?>">Moj račun</a></li>
-                                <li><a href="<?= BASE_URL."customer/logout"?>">Odjava</a></li>
-                              </ul>
-                            </div> 
-                          </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="panel panel-default">
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <b><span class="pozdrav">Nakupovalna košarica</span></b>
+                                        <b><span class="pozdrav">Povzetek naročila</span></b>
                                     </div>
-                                    <?php if(isset($_SESSION["CART"])):?>
-                                    <div class="col-lg-5 col-md-5 col-sm-5">
-                                    </div>
-                                    <div class="col-lg-1 col-md-1 col-sm-1">
-                                        <form action="<?= BASE_URL. "customer/cart/delete" ?>" method="POST">
-                                            <input type="hidden" name="do" value="delete_cart" />
-                                            <input type="submit" value="Zbriši" class="btn btn-default"/>
-                                        </form>
-                                    </div>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="panel-body">
@@ -71,27 +35,18 @@
                                                 <table class="table table-hover">
                                                     <thead>
                                                       <tr>
-                                                        <th>Naziv</th>
-                                                        <th>Cena[€]</th>
-                                                        <th>Količina</th>
-                                                        <th>Skupaj</th>
+                                                        <th><p class="text">Naziv</p></th>
+                                                        <th><p class="text">Količina</p></th>
+                                                        <th><p class="text-right">Skupaj</p></th>
                                                       </tr>
                                                     </thead>
                                                     <tbody>
                                                     <?php $skupaj = 0; ?>
                                                     <?php foreach ($products as $product): ?>
                                                         <tr>
-                                                            <th><?=$product["naziv"]?></th>
-                                                            <th><?=$product["cena"]?></th>
-                                                            <th>
-                                                                <form action="<?= BASE_URL. "customer/cart/edit" ?>" method="POST">
-                                                                    <input type="hidden" name="do" value="update_cart" />
-                                                                    <input type="hidden" name="id" value="<?= $product["id"] ?>" />
-                                                                    <input type="text" name="kolicina" value="<?= $product["vseh"] ?>" size="1" />
-                                                                    <input type="submit" value="Posodobi" class="btn btn-default"/>
-                                                                </form>
-                                                            </th>
-                                                            <td><?= number_format($product["cena"] * $product["vseh"], 2, ',', '.') ?> €</td>
+                                                            <th><p class="text"><?= $product["naziv"]?></p></th>
+                                                            <th><p class="text"><?= $product["vseh"] ?></p></th>
+                                                            <td><p class="text-right"><?= number_format($product["cena"] * $product["vseh"], 2, ',', '.') ?> €</p></td>
                                                         </tr>
                                                     <?php $skupaj += $product["cena"] * $product["vseh"]; ?>    
                                                     <?php endforeach; ?>
@@ -122,12 +77,14 @@
                                                         <p class="text-right"><b><?= number_format($skupaj, 2, ',', '.') ?> €</b></p>
                                                     </div>                                               
                                                 </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6" style="padding-top: 15px"></div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6" style="padding-top: 15px">
-                                                    <form action="<?= BASE_URL. "customer/checkout" ?>" method="POST">
-                                                        <input type="hidden" name="do" value="checkout" />
-                                                        <input type="submit" value="Na blagajno" class="btn btn-primary btn-sm btn-block"/>
+                                                    <form action="<?= BASE_URL. "customer/checkout/order" ?>" method="POST">
+                                                        <input type="hidden" name="do" value="order" />
+                                                        <input type="submit" value="Potrdi naročilo" class="btn btn-success btn-sm btn-block"/>
                                                     </form>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6" style="padding-top: 15px">
+                                                    <a href="<?= BASE_URL."customer/cart" ?>"  class="btn btn-primary btn-sm btn-block">Prekliči naročilo</a>
                                                 </div>
                                             <?php else: 
                                                 echo "Vaša košarica je prazna.";

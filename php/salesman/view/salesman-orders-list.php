@@ -59,6 +59,7 @@
                                 <div class="container-fluid">
                                     <div class="row-fluid">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <?php if(!empty($orders)):?>
                                             <table class="table table-hover">
                                                 <thead>
                                                   <tr>
@@ -82,8 +83,11 @@
                                                         </th>
                                                     </tr>
                                                 <?php endforeach; ?>
-                                                 </tbody>
-                                                </table>
+                                                </tbody>
+                                            </table>
+                                            <?php else:
+                                                echo "Ni neobdelanih naročil.";
+                                            endif;?>    
                                         </div>
                                     </div>
                                 </div>
