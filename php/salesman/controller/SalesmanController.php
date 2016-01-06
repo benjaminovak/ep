@@ -195,7 +195,7 @@ class SalesmanController {
        
     }
     
-    /*Eno potrjeno naročila*/
+    /*Eno potrjeno naročilo*/
     public static function orderProvenDetail() {
         
         $rules = [

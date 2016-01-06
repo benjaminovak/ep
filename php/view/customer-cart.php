@@ -23,6 +23,7 @@
                           <div class="container-fluid">
                             <div class="col-lg-8 col-md-8 col-sm-8">
                               <ul class="nav navbar-nav">
+                                <li><a href="<?= BASE_URL."orders" ?>">Naročila</a></li>
                                 <li><a href="<?= BASE_URL. "customer"?>">Izdelki</a></li>
                               </ul>
                             </div>

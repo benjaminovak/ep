@@ -42,6 +42,48 @@ $urls = [
             AnonymousController::productsDetail();
         }
     },
+    "orders" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            CustomerController::orders();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "orders/detail" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            CustomerController::orderDetail();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    }, 
+    "orders/canceled" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+           CustomerController::ordersCancelled();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "orders/canceled/detail" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            CustomerController::orderCancelledDetail();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "orders/proven" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            CustomerController::ordersProven();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
+    "orders/proven/detail" => function(){
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            CustomerController::orderProvenDetail();
+        } else{
+            ViewHelper::redirect(BASE_URL);
+        }
+    },
     "customer" => function(){
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -52,6 +94,15 @@ $urls = [
         } else{
             ViewHelper::redirect(BASE_URL);
         }
+    },
+    "customer/profil" => function() {
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
+            CustomerController::profileForm();
+        } else{
+            unset($_SESSION["uid"]);
+            unset($_SESSION["uname"]);
+            ViewHelper::redirect(BASE_URL);
+        } 
     },
     "customer/product/detail" => function(){
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){

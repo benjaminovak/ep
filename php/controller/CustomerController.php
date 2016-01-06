@@ -1,9 +1,10 @@
 <?php
 
-require_once("model/UsersDB.php");
-require_once("model/OrdersDB.php");
-require_once("model/ProductsDB.php");
-require_once("ViewHelper.php");
+require_once(dirname(__FILE__)."/../model/UsersDB.php");
+require_once(dirname(__FILE__)."/../model/OrdersDB.php");
+require_once(dirname(__FILE__)."/../model/ProductsDB.php");
+require_once(dirname(__FILE__)."/../ViewHelper.php");
+require_once(dirname(__FILE__)."/../model/OsebaForm.php");
 
 class CustomerController {
     
@@ -187,12 +188,156 @@ class CustomerController {
         
     }
     
+    /*Posodabljanje profila - forma*/
+    public static function profileForm() {
+        $result = UsersDB::getCustomer(["id" => $_SESSION["id"]]);
+        
+        $result["geslo2"] = $result["geslo"];
+        $_SESSION["uid"] = $_SESSION["id"];
+        $_SESSION["uname"] = $result["uporabnisko_ime"];
+        
+        $form = new OsebaForm('registracija', $result, "profil");
+        
+        echo ViewHelper::render("view/customer-profil.php", ["form" => $form]);
+    }
+    
+    /*Posodabljanje profila*/
+    public static function profile($data = []) {
+        
+        if (self::checkValues($data)) {
+            $data["aktiven"] = 1;
+            UsersDB::updateUser($data);
+        }
+        echo("Uspešno posodobljen profil.");
+        
+    }
+    
+    /*
+     *  
+     *  D E L O  Z  N A R O Č I L I
+     * 
+     *      
+     */
+    /*Prikaz vseh naročil uporabnika*/
+    public static function orders() {
+        echo ViewHelper::render("view/customer-orders-list.php", [
+            "orders" => OrdersDB::getAllUserOrders(["uporabnik_id" => $_SESSION["id"]])
+        ]);
+    }
+    
+    /*Prikaz naročila*/
+    public static function orderDetail() {
+        
+        $rules = [
+            "id" => [   
+                'filter' => FILTER_VALIDATE_INT,
+                'options' => ['min_range' => 1]
+            ]
+        ];
+ 
+        $data = filter_input_array(INPUT_POST, $rules);
+        
+        if (self::checkValues($data)) {
+            $order = OrdersDB::get($data);
+            echo ViewHelper::render("view/customer-order-detail.php", [
+                "order" => $order, 
+                "products" => OrdersDB::getOrderProducts(["narocilo_id" => $data["id"]]),
+                "user" => UsersDB::get(["id" => $order["uporabnik_id"]])
+            ]);
+        }
+        else {
+            echo ViewHelper::render("view/customer-orders-list.php");
+        }
+        
+    }
+    
+    /*Vsa potrjena naročila uporabnika*/
+    public static function ordersProven() {
+        
+        $rules = [
+            "sort" => FILTER_SANITIZE_SPECIAL_CHARS
+        ];
+ 
+        $sort = filter_input_array(INPUT_GET, $rules);
+        
+        if (self::checkValues($sort)) {
+            echo ViewHelper::render("view/customer-orders-list-proven.php", [
+                "orders" => OrdersDB::getUserAllProven($sort, ["uporabnik_id" => $_SESSION["id"]])
+            ]);
+        } else {
+            ViewHelper::redirect(BASE_URL. "orders/proven?sort=id");
+        }
+       
+    }
+    
+    /*Eno potrjeno naročilo*/
+    public static function orderProvenDetail() {
+        
+        $rules = [
+            "id" => [   
+                'filter' => FILTER_VALIDATE_INT,
+                'options' => ['min_range' => 1]
+            ]
+        ];
+        
+        $data = filter_input_array(INPUT_POST, $rules);
+        if($data == null) {
+            $data["id"] = $_SESSION["pid"];
+        }
+        
+        if (self::checkValues($data)) {
+            $order = OrdersDB::get($data);
+            echo ViewHelper::render("view/customer-order-detail-proven.php", [
+                "order" => $order, 
+                "products" => OrdersDB::getOrderProducts(["narocilo_id" => $data["id"]]),
+                "user" => UsersDB::get(["id" => $order["uporabnik_id"]])
+            ]);
+        } else {
+            ViewHelper::redirect(BASE_URL);
+        }
+    }
+    
+    /*Vsa stornirana naročila uporabnika*/
+    public static function ordersCancelled() {
+        
+        echo ViewHelper::render("view/customer-orders-list-cancelled.php", [
+            "orders" => OrdersDB::getUserAllCancelled(["uporabnik_id" => $_SESSION["id"]])
+        ]);
+    }
+    
+    /*Eno stornirano naročilo*/
+    public static function orderCancelledDetail() {
+        
+        $rules = [
+            "id" => [   
+                'filter' => FILTER_VALIDATE_INT,
+                'options' => ['min_range' => 1]
+            ]
+        ];
+        
+        $data = filter_input_array(INPUT_POST, $rules);
+        if($data == null) {
+            $data["id"] = $_SESSION["pid"];
+        }
+        
+        if (self::checkValues($data)) {
+            $order = OrdersDB::get($data);
+            echo ViewHelper::render("view/customer-order-detail-cancelled.php", [
+                "order" => $order, 
+                "products" => OrdersDB::getOrderProducts(["narocilo_id" => $data["id"]]),
+                "user" => UsersDB::get(["id" => $order["uporabnik_id"]])
+            ]);
+        } else {
+            ViewHelper::redirect(BASE_URL);
+        }
+    }
+    
     /*
     *  
     *  P R E V E R J A N J E   V H O D O V
     *      
     */
-    private static function checkValues($input) {
+    public static function checkValues($input) {
         if (empty($input)) {
             return FALSE;
         }
@@ -205,7 +350,7 @@ class CustomerController {
         return $result;
     }
     
-    private static function getLoginRules() {
+    public static function getLoginRules() {
         return [
             'uname' => FILTER_SANITIZE_STRING,
             'password' => FILTER_SANITIZE_STRING

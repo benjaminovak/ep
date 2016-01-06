@@ -1,6 +1,7 @@
 <?php
 
-require_once '../model/ProductsDB.php';
+require_once(dirname(__FILE__).'/../model/ProductsDB.php');
+require_once(dirname(__FILE__).'/ApiUtils.php');
 
 header('Content-Type: application/json');
 
@@ -126,7 +127,28 @@ switch ($resource) {
             echo returnError(404, "Unknown request: [$http_method $resource]");
         }
         break;
-      
+    case "login":
+        if ($http_method == "POST" && $param == null) {
+            if(ApiUtils::isLoginSuccessful()) {
+                $returnJson = array('loginSuccess' => true, 'active' => $_SESSION["active"], 'role' => $_SESSION["role"], 'id' => $_SESSION["id"]);
+            } else {
+                $returnJson = array('loginSuccess' => false);
+            }
+            http_response_code(200);
+            echo json_encode($returnJson);
+        } else {
+            // error
+            echo returnError(404, "Unknown request: [$http_method $resource]");
+        }
+        break;
+    case "addincart":
+        if ($http_method == "POST" && $param == null) {
+            ApiUtils::addInCart();
+        } else {
+            // error
+            echo returnError(404, "Unknown request: [$http_method $resource]");
+        }
+        break;
     default:
         returnError(404, "Invalid resource: " . $resource);
         break;

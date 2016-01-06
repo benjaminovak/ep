@@ -81,5 +81,33 @@ class OrdersDB extends AbstractDB {
                         . " ORDER BY ".  $sort["sort"] ." ASC");
         return $orders;
     }
+    
+    public static function getAllUserOrders($uporabnik_id) {
+        // ---- vsi obdelani - sortirani -----
+        return parent::query("SELECT *"
+                        . " FROM narocilo"
+                        . " WHERE uporabnik_id = :uporabnik_id", $uporabnik_id);
+    }
+    
+    public static function getUserAllProven($sort, $uporabnik_id) {
+        // ---- vsa obdelana in potrjena narocila uporabnika - sortirana -----
+        $values = ["id", "uporabnik_id", "datum"];
+        if(!in_array($sort["sort"], $values)){
+            $sort["sort"] = "id";
+        }
+        $orders = parent::query("SELECT *"
+                        . " FROM narocilo"
+                        . " WHERE uporabnik_id = :uporabnik_id AND obdelano = 'da' AND potrjeno = 'da'"
+                        . " ORDER BY ".  $sort["sort"] ." ASC", $uporabnik_id);
+        return $orders;
+    }
+    
+    public static function getUserAllCancelled($uporabnik_id) {
+        // ---- vsa obdelana in stornirana narocila uporabnika -----
+        $orders = parent::query("SELECT *"
+                        . " FROM narocilo"
+                        . " WHERE uporabnik_id = :uporabnik_id AND obdelano = 'da' AND potrjeno = 'ne'", $uporabnik_id);
+        return $orders;
+    }
 
 }
