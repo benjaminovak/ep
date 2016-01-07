@@ -17,6 +17,7 @@ class ApiUtils {
             
             if ($result != null && password_verify($data["password"], $result["geslo"]) && 
                     UsersDB::isCustomer(["uporabnik_id" => $result["id"]]) && UsersDB::isactivate(["id" => $result["id"]])) {
+                session_start();
                 $_SESSION["active"] = TRUE;
                 $_SESSION["role"] = "customer";
                 $_SESSION["id"] = $result["id"];
@@ -28,6 +29,7 @@ class ApiUtils {
     }
     
     public static function addInCart() {
+        session_start();
         $id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
         
         if (!isset($_SESSION["CART"][$id])) {

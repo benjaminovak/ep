@@ -141,6 +141,24 @@ switch ($resource) {
             echo returnError(404, "Unknown request: [$http_method $resource]");
         }
         break;
+    case "profile":
+        //TODO: sanitize
+        session_start();
+        if ($http_method == "GET" && $param == null) {
+            $user_data = UsersDB::getCustomer(["id" => $_SESSION["id"]]);
+            unset($user_data["aktiven"]);
+            echo json_encode($user_data);
+        } else if ($http_method == "POST" && $param == null) {
+            $filtered_input  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+//            echo $filtered_input["ime"];
+            UsersDB::updateCustomer($filtered_input);
+            $status = array('status' => 'OK');
+            echo json_encode($status);
+        } else {
+            // error
+            echo returnError(404, "Unknown request: [$http_method $resource]");
+        }
+        break;
     case "addincart":
         if ($http_method == "POST" && $param == null) {
             ApiUtils::addInCart();

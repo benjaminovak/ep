@@ -160,7 +160,9 @@ class UsersDB extends AbstractDB {
         } if(PostDB::get(["posta" => $params["posta"]]) == null) {
             PostDB::insert(["posta" => $params["posta"], "kraj" => $params["kraj"]]);
         } 
-        $params["uporabnik_id"] = $_SESSION["uid"];
+        if(isset($_SESSION["uid"])){
+            $params["uporabnik_id"] = $_SESSION["uid"];
+        }
         self::update(["ime" => $params["ime"], "priimek" => $params["priimek"], 
             "mail" => $params["mail"], "uporabnisko_ime" => $params["uporabnisko_ime"], 
             "geslo" => $params["geslo"], "aktiven" => $params["aktiven"], "id" => $params["uporabnik_id"]]); 

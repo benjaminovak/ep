@@ -195,6 +195,7 @@ class CustomerController {
         $result["geslo2"] = $result["geslo"];
         $_SESSION["uid"] = $_SESSION["id"];
         $_SESSION["uname"] = $result["uporabnisko_ime"];
+        $result["stranka"] = true;
         
         $form = new OsebaForm('registracija', $result, "profil");
         
@@ -206,7 +207,7 @@ class CustomerController {
         
         if (self::checkValues($data)) {
             $data["aktiven"] = 1;
-            UsersDB::updateUser($data);
+            UsersDB::updateCustomer($data);
         }
         echo("Uspešno posodobljen profil.");
         
