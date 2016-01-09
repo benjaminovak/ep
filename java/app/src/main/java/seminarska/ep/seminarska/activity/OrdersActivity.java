@@ -22,26 +22,28 @@ import com.google.gson.Gson;
 
 import seminarska.ep.seminarska.R;
 import seminarska.ep.seminarska.adapter.ProductsAdapter;
+import seminarska.ep.seminarska.model.Narocilo;
 import seminarska.ep.seminarska.model.Product;
 import seminarska.ep.seminarska.utilities.Utils;
 
-public class ProductListActivity extends ListActivity {
+public class OrdersActivity extends ListActivity {
 
-    private static final String ALL_ACTIVE_PRODUCTS = "http://10.0.2.2/netbeans/ep/php/api/izdelki";
-    private static final String TAG = ProductListActivity.class.getCanonicalName();
+    private static final String ORDERS = "http://10.0.2.2/netbeans/ep/php/api/narocilo/%s";
+    private static final String TAG = OrdersActivity.class.getCanonicalName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String tip = getIntent().getExtras().getString("tip");
 
         final RequestQueue queue = Volley.newRequestQueue(this);
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, ALL_ACTIVE_PRODUCTS,
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, String.format(ORDERS, tip != null ? tip : "potrjeni"),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.v("RESPONSE", response);
                         if (response.isEmpty()) {
-                            Toast.makeText(ProductListActivity.this, "Ni nobenega produkta.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(OrdersActivity.this, "Ni naročil.", Toast.LENGTH_LONG).show();
                             finish();
                         } else {
                             handleResponse(response);
@@ -50,7 +52,7 @@ public class ProductListActivity extends ListActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ProductListActivity.this, "An error occurred.", Toast.LENGTH_LONG).show();
+                Toast.makeText(OrdersActivity.this, "An error occurred.", Toast.LENGTH_LONG).show();
                 Log.w(TAG, "Exception: " + error.getLocalizedMessage());
             }
         });
@@ -60,9 +62,10 @@ public class ProductListActivity extends ListActivity {
 
     private void handleResponse(String response) {
         final Gson gson = new Gson();
-        final Product[] products = gson.fromJson(response, Product[].class);
+        final Narocilo[] narocila = gson.fromJson(response, Narocilo[].class);
 
-        ProductsAdapter adapter = new ProductsAdapter(this, products);
+        final ArrayAdapter<Narocilo> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, narocila);
         setListAdapter(adapter);
     }
 
@@ -90,9 +93,9 @@ public class ProductListActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        final Product product = (Product) getListAdapter().getItem(position);
-        final Intent intent = new Intent(this, ProductDetailActivity.class);
-        intent.putExtra("product", product);
+        final Narocilo narocilo = (Narocilo) getListAdapter().getItem(position);
+        final Intent intent = new Intent(this, OrderDetailsActivity.class);
+        intent.putExtra("id", narocilo.id);
         startActivity(intent);
     }
 }

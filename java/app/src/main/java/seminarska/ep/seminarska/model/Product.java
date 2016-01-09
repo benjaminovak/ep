@@ -13,6 +13,7 @@ public class Product implements Serializable {
     public String opis;
     public String aktiven;
     public String uri;
+    public int vseh;
 
     @Override
     public String toString() {
