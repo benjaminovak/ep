@@ -63,6 +63,7 @@ switch ($resource) {
         }
         break; 
     case "izdelki":
+        session_start();
         if ($http_method == "GET" && $param == null) {
             // getAll
             $products = ProductsDB::getAllActive();
@@ -141,27 +142,65 @@ switch ($resource) {
             echo returnError(404, "Unknown request: [$http_method $resource]");
         }
         break;
+    case "logout":
+        if ($http_method == "GET" && $param == null) {
+            session_start();
+            session_destroy();
+            $returnJson = array('status' => 'ok');
+            http_response_code(200);
+            echo json_encode($returnJson);
+        } else {
+            // error
+            echo returnError(404, "Unknown request: [$http_method $resource]");
+        }
+        break;
     case "profile":
         //TODO: sanitize
         session_start();
         if ($http_method == "GET" && $param == null) {
             $user_data = UsersDB::getCustomer(["id" => $_SESSION["id"]]);
             unset($user_data["aktiven"]);
+            http_response_code(200);
             echo json_encode($user_data);
         } else if ($http_method == "POST" && $param == null) {
             $filtered_input  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 //            echo $filtered_input["ime"];
             UsersDB::updateCustomer($filtered_input);
             $status = array('status' => 'OK');
+            http_response_code(204);
             echo json_encode($status);
         } else {
             // error
             echo returnError(404, "Unknown request: [$http_method $resource]");
         }
         break;
-    case "addincart":
-        if ($http_method == "POST" && $param == null) {
-            ApiUtils::addInCart();
+    case "cart":
+        session_start();
+        if ($http_method == "GET" && $param == null) {
+            ApiUtils::getCartProducts();
+        } else if ($http_method == "POST" && $param != null) {
+            ApiUtils::addInCart($param);
+        } else if ($http_method == "PUT" && $param != null) {
+            ApiUtils::editCart($param);
+        } else if ($http_method == "DELETE" && $param != null) {
+            ApiUtils::removeFromCart($param);
+        } else {
+            // error
+            echo returnError(404, "Unknown request: [$http_method $resource]");
+        }
+        break;
+    case "narocilo":
+        session_start();
+        if ($http_method == "GET" && $param == null) {
+            ApiUtils::saveOrder();
+        } else if ($http_method == "GET" && $param == "oddani") {
+            ApiUtils::orders();
+        } else if ($http_method == "GET" && $param == "potrjeni") {
+            ApiUtils::ordersProven();
+        } else if ($http_method == "GET" && $param == "stornirani") {
+            ApiUtils::ordersCancelled();
+        } else if ($http_method == "GET" && $param != null) {
+            ApiUtils::getOrderProducts($param);
         } else {
             // error
             echo returnError(404, "Unknown request: [$http_method $resource]");
