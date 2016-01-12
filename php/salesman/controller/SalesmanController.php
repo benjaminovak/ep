@@ -349,7 +349,6 @@ class SalesmanController {
         
         if (self::checkValues($data)) {
             ImagesDB::insert($data);
-            var_dump("imageAddKonec");
             $_SESSION["izdelek_id"] = $data["izdelek_id"];
             echo ViewHelper::redirect(BASE_URL . "products/images");
         } else {
