@@ -1,7 +1,13 @@
 1. Gesla za uvoz certifikatov: ep (za vse certifikate)
 2. Uporabniška imena in gesla za administratorja, prodajalce in stranke:
-- admin - admin
-- beni	- benjamin
++ administrator:
+	- admin - admin
++ prodajalec
+	- beni	- benjamin
+	- naum	- naum
++ stranka
+	- test  - testtest
+	- ep    - epepep
 
 3. Dodatni koraki,ki so potrebni, da se implementacije zažene:
 - Certifikati:
@@ -12,4 +18,3 @@
 	 + Certifikat agencije epca uvozimo v brskalnik kot zaupanja vredno entiteto za identifikacijo
 	   spletnih strani. Uvozimo tudi vse ostale certifikate.
 	 + sudo a2ensite default-ssl.conf, sudo service apache2 restart
-	 + 
