@@ -18,3 +18,11 @@
 	 + Certifikat agencije epca uvozimo v brskalnik kot zaupanja vredno entiteto za identifikacijo
 	   spletnih strani. Uvozimo tudi vse ostale certifikate.
 	 + sudo a2ensite default-ssl.conf, sudo service apache2 restart
+- Knjižnice:
+	+ sudo pear upgrade -Z pear/Archive_Tar
+	+ sudo pear install HTML_QuickForm2_Captcha-0.1.2
+	+ sudo pear install Services_ReCaptcha
+	+ sudo apt-get install sendmail
+	+ sudo sendmailconfig
+	+ sprememba php.ini datoteke v direktoriju /etc/php5/apache2 -> 
+		-> dodajanje vrstice: sendmail_path = /usr/sbin/sendmail -t -i

@@ -2,3 +2,7 @@ RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule "(^index.php/customer*)" "https://%{HTTP_HOST}%{REQUEST_URI}"
 
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule "(^index.php/orders*)" "https://%{HTTP_HOST}%{REQUEST_URI}"
+
