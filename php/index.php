@@ -16,10 +16,40 @@ $urls = [
     "" => function(){
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
             ViewHelper::redirect(BASE_URL . "customer");
-        } else{
-            AnonymousController::products(); 
+        } else {
+            AnonymousController::products();
         }
     },
+    "customer/registration" => function(){
+        if(isset($_GET['email']) && isset($_GET['key'])) {
+            $reg_success = AnonymousController::checkRegistration();
+            if ($reg_success) {
+                echo ViewHelper::render("view/customer-message.php", [
+                "message" => "Registracija uspešna! Lahko se sedaj prijavite." 
+                ]);
+//                echo "DA";
+//                AnonymousController::registrationSuccessful();
+            } else {
+                echo ViewHelper::render("view/customer-message.php", [
+                "message" => "Registracija neuspešna! Vpišite pravi registracijski naslov." 
+                ]);
+//                 echo "NE";
+//                AnonymousController::registrationUnsuccessful();
+            }
+        } else {
+            AnonymousController::registration(); 
+        }
+    }, 
+    "customer/registration/mailsent" => function(){
+        echo ViewHelper::render("view/customer-message.php", [
+                "message" => ("Hvala za registracijo! Potrditveni mail je bil poslan na mail.") 
+        ]);
+    },
+    "customer/registration/mailfailed" => function(){
+        echo ViewHelper::render("view/customer-message.php", [
+                "message" => "Zgodila se je napaka! Potrditveni mail ni bil poslan."
+        ]);
+    }, 
     "customer/login" => function(){
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "customer"){
             ViewHelper::redirect(BASE_URL . "customer");

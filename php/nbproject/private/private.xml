@@ -12,14 +12,13 @@
             <file>file:/home/ep/NetBeansProjects/ep/php/view/anonymous-products-list.php</file>
         </group>
         <group>
-            <file>file:/home/ep/NetBeansProjects/ep/php/api/index.php</file>
             <file>file:/home/ep/NetBeansProjects/ep/php/index.php</file>
             <file>file:/home/ep/NetBeansProjects/ep/php/controller/CustomerController.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/view/customer-products-list.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/index.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/view/salesman-user-add.php</file>
             <file>file:/home/ep/NetBeansProjects/ep/php/salesman/controller/SalesmanController.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/view/salesman-order-detail.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/controller/AnonymousController.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/ViewHelper.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/model/Activation.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/view/customer-message.php</file>
         </group>
     </open-files>
 </project-private>

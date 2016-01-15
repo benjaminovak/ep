@@ -25,6 +25,7 @@
                               <ul class="nav navbar-nav">
                                 <li class="active"><a href="<?= BASE_URL."users" ?>">Uporabniki</a></li>
                                 <li><a href="<?= BASE_URL."profile" ?>">Profil</a></li>
+                                <li><a href="<?= BASE_URL."diary" ?>">Dnevnik</a></li>
                               </ul>
                             </div> 
                             <div class="col-lg-1 col-md-1 col-sm-1">
@@ -57,7 +58,9 @@
                                             if ($form->isSubmitted() && $form->validate()) {    
                                                 try {
                                                     $data = $form->getValue();
-                                                    AdminController::addUser($data);
+                                                    $diary = AdminController::createDiary();
+                                                    $data["dnevnik_id"] = $diary;
+                                                    $user = AdminController::addUser($data);
                                                 } catch (PDOException $exc) {
                                                     AdminController::addUser();
                                                 }

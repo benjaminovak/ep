@@ -18,14 +18,15 @@ class CustomerController {
     }
     
     public static function check() {
+        
         $data = filter_input_array(INPUT_POST, self::getLoginRules());
         
         if (self::checkValues($data)) {
             $username = $data["uname"];            
             $result = UsersDB::getPassword(["uporabnisko_ime" => $username]);
-            
+
             if ($result != null && password_verify($data["password"], $result["geslo"]) && 
-                    UsersDB::isCustomer(["uporabnik_id" => $result["id"]]) && UsersDB::isactivate(["id" => $result["id"]])) {
+                    UsersDB::isCustomer(["uporabnik_id" => $result["id"]]) && UsersDB::isActivate(["id" => $result["id"]])) {
                 $_SESSION["active"] = TRUE;
                 $_SESSION["role"] = "customer";
                 $_SESSION["id"] = $result["id"];
@@ -35,7 +36,6 @@ class CustomerController {
                 $data["password"] = "";
                 self::login($data);
             }
-            
         } else {
             $data["password"] = "";
             self::login($data);
@@ -355,6 +355,14 @@ class CustomerController {
         return [
             'uname' => FILTER_SANITIZE_STRING,
             'password' => FILTER_SANITIZE_STRING
+        ];
+    }
+    
+    public static function getLoginRulesWithCaptcha() {
+        return [
+            'uname' => FILTER_SANITIZE_STRING,
+            'password' => FILTER_SANITIZE_STRING,
+            'g-recaptcha-response' => FILTER_SANITIZE_STRING
         ];
     }
     

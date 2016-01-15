@@ -75,6 +75,8 @@
                                                         echo "Potrjeno";                                                       
                                                     } elseif ($order["potrjeno"] == "ne") {
                                                         echo "Preklicano";  
+                                                    } elseif ($order["potrjeno"] == "st") {
+                                                        echo "Stornirano";  
                                                     } else {
                                                         echo "Ne obravnavano";  
                                                     }?>
@@ -111,7 +113,7 @@
                                                  </tbody>
                                                 </table>
                                                 <?php endif; 
-                                                if($order["potrjeno"] == "ne"):?>
+                                                if($order["potrjeno"] == "ne" || $order["potrjeno"] == "st"):?>
                                                     <a href="<?= BASE_URL."order/confirmation?id=".$order["id"] ?>"  class="btn btn-success btn-sm btn-block">Potrdi naročilo</a>
                                                 <?php elseif($order["potrjeno"] == "da"):?>
                                                     <a href="<?= BASE_URL."order/cancellation?id=".$order["id"] ?>"  class="btn btn-danger btn-sm btn-block">Prekliči naročilo</a>

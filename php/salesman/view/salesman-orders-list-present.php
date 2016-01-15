@@ -82,6 +82,8 @@
                                                             echo "Potrjeno";                                                       
                                                         } elseif ($order["potrjeno"] == "ne") {
                                                             echo "Preklicano";  
+                                                        } elseif ($order["potrjeno"] == "st") {
+                                                            echo "Stornirano";  
                                                         } else {
                                                             echo "Ne obravnavano";  
                                                         }?>

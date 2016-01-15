@@ -1,6 +1,7 @@
 <?php
 
 require_once("../model/UsersDB.php");
+require_once("../model/DiaryDB.php");
 require_once("../model/OsebaForm.php");
 require_once("../ViewHelper.php");
 
@@ -23,6 +24,8 @@ class AdminController {
                 $_SESSION["active"] = TRUE;
                 $_SESSION["role"] = "admin";
                 $_SESSION["id"] = $result["id"];
+                self::addActionToDiary($_SESSION["id"], "Administrator z id-jem " . $_SESSION["id"]
+                        . " se je prijavil v sistem");
                 ViewHelper::redirect(BASE_URL);
             }
             else{
@@ -35,6 +38,20 @@ class AdminController {
             $data["password"] = "";
             self::login($data);
         }
+    }
+    
+    /*
+     *  
+     *  D E L O   Z   D N E V N I K O M
+     * 
+     *      
+     */
+    public static function showDiary() {
+        
+        echo ViewHelper::render("view/admin-diary.php", [
+            "messages" => DiaryDB::getAll()
+        ]);
+        
     }
     
     /*
@@ -70,6 +87,8 @@ class AdminController {
         if (self::checkValues($data)) {
             UsersDB::updateUser($data);
         }
+        self::addActionToDiary($_SESSION["id"], "Administrator z id-jem " . $_SESSION["id"]
+                        . " je posodobil svoj profil");
         echo ViewHelper::redirect(BASE_URL . "profile");
         
     }
@@ -109,6 +128,8 @@ class AdminController {
         if (self::checkValues($data)) {
             UsersDB::updateUser($data);
         }
+        self::addActionToDiary($_SESSION["id"], "Administrator z id-jem " . $_SESSION["id"]
+                        . " je posodobil prodajalca z id-jem " . $_SESSION["uid"]);
         echo ViewHelper::redirect(BASE_URL . "users");
          
     }
@@ -126,12 +147,28 @@ class AdminController {
     public static function addUser($data = []) {
         
         if (self::checkValues($data)) {
-            UsersDB::insertUser($data);
+            $id = UsersDB::insertUser($data);
+            self::addActionToDiary($_SESSION["id"], "Administrator z id-jem " . $_SESSION["id"]
+                        . " je dodal prodajalca z id-jem " . $id);
             echo ViewHelper::redirect(BASE_URL . "users");
         } else {
             self::addUserForm();
         }
         
+    }
+    
+    /*
+    *  
+    *  D E L O   Z   D N E V N I K I
+    * 
+    *      
+    */
+    public static function createDiary() {
+        return DiaryDB::insertDiary();
+    }
+    
+    public static function addActionToDiary($user_id, $msg) {
+        return DiaryDB::addAction($user_id, $msg);
     }
     
     /*

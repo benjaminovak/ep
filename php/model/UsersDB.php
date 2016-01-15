@@ -101,6 +101,12 @@ class UsersDB extends AbstractDB {
         return $result;
     }
     
+    //Posodabljanje dnevnika prodajalca
+    public static function updateSalesmanDiary(array $params) {
+        return parent::modify("UPDATE prodajalec SET dnevnik_id = :dnevnik_id "
+                        . " WHERE uporabnik_id = :uporabnik_id", $params);
+    }
+    
     //Ustvarjanje prodajalca
     public static function insertUser(array $params) {
         unset($params["geslo2"]);
@@ -113,10 +119,16 @@ class UsersDB extends AbstractDB {
             $params["aktiven"] = "ne";
         }
         $result = self::insert($params);
-        return parent::modify("INSERT INTO prodajalec (uporabnik_id) "
+        if(isset($params["dnevnik_id"])) {
+            return parent::modify("INSERT INTO prodajalec (uporabnik_id, dnevnik_id) "
+                        . " VALUES (:uporabnik_id, :dnevnik_id)",["uporabnik_id" => $result, "dnevnik_id" => $params["dnevnik_id"]]);
+        } else {
+            return parent::modify("INSERT INTO prodajalec (uporabnik_id) "
                         . " VALUES (:uporabnik_id)",["uporabnik_id" => $result]);
+        }
         
     }
+    
     /*
     *  P O I Z V E D O V A N J E   P O   S T R A N K I
     */ 
@@ -176,7 +188,7 @@ class UsersDB extends AbstractDB {
     public static function insertCustomer(array $params) {
         $options = array("cost" => 10);
         $params["geslo"] = password_hash($params["geslo"], PASSWORD_BCRYPT, $options);
-        if($params["aktiven"] == 1){
+        if(isset($params["aktiven"]) && $params["aktiven"] == 1){
             $params["aktiven"] = "da";
         } else {
             $params["aktiven"] = "ne";
@@ -226,6 +238,12 @@ class UsersDB extends AbstractDB {
                         . " FROM administrator"
                         . " WHERE uporabnik_id = :uporabnik_id", $id);
         return count($product) == 1;
+    }
+    
+     //Posodabljanje dnevnika administratorja
+    public static function updateAdminDiary(array $params) {
+        return parent::modify("UPDATE administrator SET dnevnik_id = :dnevnik_id "
+                        . " WHERE uporabnik_id = :uporabnik_id", $params);
     }
     
     /*

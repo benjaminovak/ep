@@ -106,7 +106,7 @@ class OrdersDB extends AbstractDB {
         // ---- vsa obdelana in stornirana narocila uporabnika -----
         $orders = parent::query("SELECT *"
                         . " FROM narocilo"
-                        . " WHERE uporabnik_id = :uporabnik_id AND obdelano = 'da' AND potrjeno = 'ne'", $uporabnik_id);
+                        . " WHERE uporabnik_id = :uporabnik_id AND obdelano = 'da' AND potrjeno = 'st'", $uporabnik_id);
         return $orders;
     }
 

@@ -23,9 +23,9 @@
                           <div class="container-fluid">
                             <div class="col-lg-11 col-md-11 col-sm-11">
                               <ul class="nav navbar-nav">
-                                <li class="active"><a href="<?= BASE_URL."users" ?>">Uporabniki</a></li>
+                                <li><a href="<?= BASE_URL."users" ?>">Uporabniki</a></li>
                                 <li><a href="<?= BASE_URL."profile" ?>">Profil</a></li>
-                                <li><a href="<?= BASE_URL."diary" ?>">Dnevnik</a></li>
+                                <li class="active"><a href="<?= BASE_URL."diary" ?>">Dnevnik</a></li>
                               </ul>
                             </div> 
                             <div class="col-lg-1 col-md-1 col-sm-1">
@@ -33,7 +33,8 @@
                                 <li><a href="<?= BASE_URL."logout" ?>">Odjava</a></li>
                               </ul>
                             </div> 
-                          </div>       
+                          </div>
+                                   
                         </nav>
                     </div>
                 </div>
@@ -45,7 +46,9 @@
                             <div class="panel-heading" id="glava">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <b><span class="pozdrav">Spremeni uporabnika</span></b>
+                                            <b><span class="pozdrav">Dnevnik</span></b>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
                                     </div>
                                 </div>
                             </div>
@@ -54,19 +57,27 @@
                                 <div class="container-fluid">
                                     <div class="row-fluid">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
-                                            <?php
-                                            if ($form->isSubmitted() && $form->validate()) {
-                                                try {
-                                                    $data = $form->getValue();
-                                                    AdminController::updateUser($data);
-                                                } catch (PDOException $exc) {
-                                                    AdminController::updateUser();
-                                                }
-                                            } 
-                                            else {
-                                                echo $form;
-                                            }
-                                            ?>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                  <tr>
+                                                    <th class="col-lg-1 col-md-1 col-sm-1">ID uporabnika</th>
+                                                    <th class="col-lg-1 col-md-1 col-sm-1">ID dnevnika</th>
+                                                    <th class="col-lg-3 col-md-3 col-sm-3">Časovni žig</th>
+                                                    <th class="col-lg-7 col-md-7 col-sm-7">Opis akcije</th>
+                                                    <th></th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php foreach ($messages as $message): ?>
+                                                    <tr>
+                                                        <th class="col-lg-1 col-md-1 col-sm-1"><?=$message["id"]?></th>
+                                                        <th class="col-lg-1 col-md-1 col-sm-1"><?=$message["dnevnik_id"]?></th>
+                                                        <th class="col-lg-3 col-md-3 col-sm-3"><?=$message["casovni_zig"]?></th>
+                                                        <th class="col-lg-7 col-md-7 col-sm-7"><?=$message["opis"]?></th>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

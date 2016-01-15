@@ -3,9 +3,62 @@
 require_once("model/UsersDB.php");
 require_once("model/ProductsDB.php");
 require_once("model/ImagesDB.php");
+require_once("model/Activation.php");
 require_once("ViewHelper.php");
 
 class AnonymousController {
+    
+    /*  
+    *  R E G I S T R A C I J A   S T R A N K E 
+    */
+    /*Registracija stranke forma*/
+    public static function registration($values = ["ime" => "", "priimek" => "",
+        "mail" => "", "uporabnisko_ime" => "", "geslo" => "", "aktiven" => "",
+        "telefon" => "", "ulica" => "", "stevilka" => "", "posta" => "", "kraj" => ""]) {
+        $values["geslo"] = "";
+        $values["geslo2"] = "";
+        $values["stranka"] = true;
+        $values["vloga"] = "stranka";
+        $form = new OsebaForm('registracija', $values, "dodajanje");
+        echo ViewHelper::render("view/customer-registration.php", ["form" => $form]);
+        
+    }
+    
+    /*Registracija stranke*/
+    public static function register($data = []) {
+        
+        if (self::checkValues($data)) {
+            UsersDB::insertCustomer($data);
+        } else {
+            self::registration();
+        }
+        
+    }
+    
+    public static function sendConfirmationEmail($mail) {
+        $message = " Da bi aktivirali vaš račun pritisnite na naslednjo povezavo:\n\n";
+        $message .= "https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        $activation = Activation::hashMail($mail);
+        $message .= "?email=" . urlencode($mail) . "&key=" . urlencode($activation);
+        $sentmail = mail($mail, "Potrditev registracije na spletno trgovino", $message);
+        if($sentmail == true) {
+            ViewHelper::redirect(BASE_URL."customer/registration/mailsent");
+        } else {
+            ViewHelper::redirect(BASE_URL."customer/registration/mailfailed");
+        }
+    }
+    
+    public static function checkRegistration() {
+        $rules = [
+            'email' => FILTER_SANITIZE_STRING,
+            'key' => FILTER_SANITIZE_STRING,
+        ];
+        
+        $data = filter_input_array(INPUT_GET, self::getLoginRules());
+        $mail = urldecode($_GET['email']);
+        $activation_key = urldecode($_GET['key']);
+        return Activation::checkActivationCode($mail, $activation_key);
+    }
     
     /*  
     *  P R I K A Z   I Z D E L K O V     

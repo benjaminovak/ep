@@ -25,6 +25,7 @@
                               <ul class="nav navbar-nav">
                                 <li><a href="<?= BASE_URL."users" ?>">Uporabniki</a></li>
                                 <li class="active"><a href="<?= BASE_URL."profile" ?>">Profil</a></li>
+                                <li><a href="<?= BASE_URL."diary" ?>">Dnevnik</a></li>
                               </ul>
                             </div> 
                             <div class="col-lg-1 col-md-1 col-sm-1">

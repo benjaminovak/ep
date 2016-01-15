@@ -1,5 +1,6 @@
 <?php
 
+require_once 'PEAR/Config.php';
 require_once 'HTML/QuickForm2.php';
 require_once 'HTML/QuickForm2/Container/Fieldset.php';
 require_once 'HTML/QuickForm2/Element/InputSubmit.php';
@@ -7,6 +8,7 @@ require_once 'HTML/QuickForm2/Element/InputText.php';
 require_once 'HTML/QuickForm2/Element/Select.php';
 require_once 'HTML/QuickForm2/Element/InputPassword.php';
 require_once 'HTML/QuickForm2/Element/InputCheckbox.php';
+require_once 'HTML/QuickForm2/Element/Captcha/ReCaptcha.php';
 
 require_once 'UsersDB.php';
 
@@ -131,18 +133,31 @@ class OsebaForm extends HTML_QuickForm2 {
             $this->kraj->addRule('maxlength', 'Kraj naj bo krajši od 45 znakov.', 45);
         }
         
-        if ($action != "profil") {
+        if ($action != "profil" && $values["vloga"] != "stranka") {
             $this->aktiven = new HTML_QuickForm2_Element_InputCheckbox('aktiven');
             $this->aktiven->setLabel('Aktiven uporabnik:');
             if(isset($values["aktiven"]) && $values["aktiven"] == "da" ) {
                 $this->aktiven->setValue(1);
             }
         }        
+        $this->captcha = new HTML_QuickForm2_Element_Captcha_ReCaptcha(
+                'captcha[recaptcha]',
+                array('id' => 'captcha_recaptcha'),
+                array(
+                    'label' => 'Vnesite kodo na sliki',
+                    'public-key'  => '6LcKZxUTAAAAANecoxYxMzY9cwN49L1gBUOxUyd4',
+                    'private-key' => '6LcKZxUTAAAAAM_DSAsVlDPEAsALZB2X36pqilgr'
+                )
+            );
 
         $this->gumb = new HTML_QuickForm2_Element_InputSubmit(null);
          if($action == "dodajanje"){
             if(isset($values["stranka"])){
-                $this->gumb->setAttribute('value', 'Ustvari stranko');
+                if($values["vloga"] == "stranka") {
+                    $this->gumb->setAttribute('value', 'Registriraj se');
+                } else {
+                    $this->gumb->setAttribute('value', 'Ustvari stranko');
+                }
             } else {
                 $this->gumb->setAttribute('value', 'Ustvari prodajalca');
             }
@@ -171,9 +186,10 @@ class OsebaForm extends HTML_QuickForm2 {
             $this->addElement($this->posta);
             $this->addElement($this->kraj);
         }
-        if ($action != "profil") {
+        if ($action != "profil" && $values["vloga"] != "stranka") {
             $this->addElement($this->aktiven);
         }
+        $this->addElement($this->captcha);
         $this->addElement($this->gumb);
 
         $this->addRecursiveFilter('trim');

@@ -38,6 +38,9 @@ class SalesmanController {
                 $_SESSION["active"] = TRUE;
                 $_SESSION["role"] = "salesman";
                 $_SESSION["id"] = $result["id"];
+                $user = UsersDB::getSalesman(["id" => $_SESSION["id"]]);
+                self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
+                        . "se je prijavil v sistem");
                 ViewHelper::redirect(BASE_URL);
             }
             else{
@@ -49,6 +52,11 @@ class SalesmanController {
             unset($data["password"]);
             self::login($data);
         }
+    }
+    
+    public static function addActionToDiary($user_id, $msg) {
+        return DiaryDB::addAction($user_id, $msg);
+      
     }
     
     /*
@@ -106,6 +114,8 @@ class SalesmanController {
 
         if (self::checkValues($data)) {
             OrdersDB::update(["obdelano" => "da", "id" => $data["id"]]);
+            self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
+                        . " je spremenil status narocila z id-jem " . $data["id"] . " na obdelano");
             ViewHelper::redirect(BASE_URL);
            
         }
@@ -165,8 +175,14 @@ class SalesmanController {
         $data = filter_input_array(INPUT_GET, $rules);
 
         if (self::checkValues($data)) {
+            $order = OrdersDB::get(["id" => $data["id"]]);
+            if($order["potrjeno"] == "da" && $insert == "ne") {
+                $insert = "st";
+            }
             OrdersDB::updateConfirmation(["potrjeno" => $insert, "id" => $data["id"]]);
             $_SESSION["pid"] = $data["id"];
+            self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
+                        . " je posodobil narocilo z id-jem " . $data["id"] . ": potrjeno = " . $insert);
             ViewHelper::redirect(BASE_URL."orders/present/detail");
            
         }
@@ -269,6 +285,8 @@ class SalesmanController {
 
         if (self::checkValues($data)) {
             ProductsDB::updateProduct($data);
+            self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
+                        . " je posodobil izdelek z id-jem " . $data["id"]);
         }
         echo ViewHelper::redirect(BASE_URL . "products");
          
@@ -285,7 +303,9 @@ class SalesmanController {
     public static function addProduct($data = []) {
         
         if (self::checkValues($data)) {
-            ProductsDB::addProduct($data);
+            $id = ProductsDB::addProduct($data);
+            self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
+                        . " je dodal izdelek z id-jem " . $id);
             echo ViewHelper::redirect(BASE_URL . "products");
         } else {
             self::addUserForm();
@@ -337,6 +357,8 @@ class SalesmanController {
         if (self::checkValues($data)) {
             ImagesDB::delete($data);
             $_SESSION["izdelek_id"] = $data["izdelek_id"];
+            self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
+                        . " je izbrisal sliko izdelka z id-jem " . $data["izdelek_id"]);
             echo ViewHelper::redirect(BASE_URL . "products/images");
         } else {
             echo ViewHelper::redirect(BASE_URL);
@@ -351,6 +373,8 @@ class SalesmanController {
             ImagesDB::insert($data);
             var_dump("imageAddKonec");
             $_SESSION["izdelek_id"] = $data["izdelek_id"];
+            self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
+                        . " je dodal sliko izdelku z id-jem " . $data["izdelek_id"]);
             echo ViewHelper::redirect(BASE_URL . "products/images");
         } else {
             echo ViewHelper::redirect(BASE_URL);
@@ -391,6 +415,8 @@ class SalesmanController {
             $data["aktiven"] = "da";
             UsersDB::updateUser($data);
         }
+        self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
+                        . " je uspesno posodobil svoj profil");
         echo("Uspešno posodobljen profil.");
         
     }
@@ -430,6 +456,8 @@ class SalesmanController {
 
         if (self::checkValues($data)) {
             UsersDB::updateCustomer($data);
+            self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
+                        . " je posodobil stranko z id-jem " . $_SESSION["uid"]);
             echo ViewHelper::redirect(BASE_URL . "users");
         } else {
             self::updateUserForm();
@@ -452,7 +480,9 @@ class SalesmanController {
     public static function addUser($data = []) {
         
         if (self::checkValues($data)) {
-            UsersDB::insertCustomer($data);
+            $id = UsersDB::insertCustomer($data);
+            self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
+                        . " je dodal stranko z id-jem " . $id);
             echo ViewHelper::redirect(BASE_URL . "users");
         } else {
             self::addUserForm();

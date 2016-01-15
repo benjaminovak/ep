@@ -43,6 +43,15 @@ $urls = [
             ViewHelper::redirect(BASE_URL);
         } 
     },
+    "diary" => function() {
+        if(isset($_SESSION["active"]) && $_SESSION["role"] == "admin"){
+            AdminController::showDiary();
+        } else{
+            unset($_SESSION["uid"]);
+            unset($_SESSION["uname"]);
+            ViewHelper::redirect(BASE_URL);
+        } 
+    },
     "users/edit" => function(){
         if(isset($_SESSION["active"]) && $_SESSION["role"] == "admin"){
             AdminController::updateUserForm();
