@@ -371,7 +371,6 @@ class SalesmanController {
         
         if (self::checkValues($data)) {
             ImagesDB::insert($data);
-            var_dump("imageAddKonec");
             $_SESSION["izdelek_id"] = $data["izdelek_id"];
             self::addActionToDiary($_SESSION["id"], "Prodajalec z id-jem " . $_SESSION["id"]
                         . " je dodal sliko izdelku z id-jem " . $data["izdelek_id"]);

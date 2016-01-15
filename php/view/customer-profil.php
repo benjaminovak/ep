@@ -24,7 +24,7 @@
                               <div class="col-lg-8 col-md-8 col-sm-8">
                               <ul class="nav navbar-nav">
                                 <li><a href="<?= BASE_URL."orders" ?>">Naročila</a></li>
-                                <li class="active"><a href="<?= BASE_URL. "customer"?>">Izdelki</a></li>
+                                <li><a href="<?= BASE_URL. "customer"?>">Izdelki</a></li>
                               </ul>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4"> 
@@ -34,7 +34,7 @@
                                 <?php else: ?>
                                     <li><a href="<?= BASE_URL."customer/cart"  ?>">Košarica</a></li>
                                 <?php endif; ?>
-                                <li><a href="<?= BASE_URL."customer/profil" ?>">Moj račun</a></li>
+                                <li class="active"><a href="<?= BASE_URL."customer/profil" ?>">Moj račun</a></li>
                                 <li><a href="<?= BASE_URL."customer/logout" ?>">Odjava</a></li>
                               </ul>
                             </div> 

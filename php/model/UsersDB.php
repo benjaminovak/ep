@@ -201,7 +201,7 @@ class UsersDB extends AbstractDB {
         $result = self::insert(["ime" => $params["ime"], "priimek" => $params["priimek"], 
             "mail" => $params["mail"], "uporabnisko_ime" => $params["uporabnisko_ime"], 
             "geslo" => $params["geslo"], "aktiven" => $params["aktiven"]]);
-        var_dump($result, $params, ["uporabnik_id" => $result, "telefon" => $params["telefon"], "ulica" => $params["ulica"], "stevilka"=> $params["stevilka"], "posta_id" => $posta]);
+        //var_dump($result, $params, ["uporabnik_id" => $result, "telefon" => $params["telefon"], "ulica" => $params["ulica"], "stevilka"=> $params["stevilka"], "posta_id" => $posta]);
         return parent::modify("INSERT INTO stranka (uporabnik_id, telefon, ulica, stevilka, posta_id) "
                         . " VALUES (:uporabnik_id, :telefon, :ulica, :stevilka, :posta_id)",
                             ["uporabnik_id" => $result, "telefon" => $params["telefon"], "ulica" => $params["ulica"], 

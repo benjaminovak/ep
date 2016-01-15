@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,8 +23,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import seminarska.ep.seminarska.R;
 import seminarska.ep.seminarska.model.Product;
+import seminarska.ep.seminarska.utilities.Utils;
 
 public class ProductDetailActivity extends Activity {
 
@@ -47,11 +52,16 @@ public class ProductDetailActivity extends Activity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            final Gson gson = new Gson();
-                            product = gson.fromJson(response, Product.class);
+                            if (response.isEmpty()) {
+                                Toast.makeText(ProductDetailActivity.this, "Produkt ne obstaja.", Toast.LENGTH_LONG).show();
+                                finish();
+                            } else {
+                                final Gson gson = new Gson();
+                                product = gson.fromJson(response, Product.class);
 
-                            final String text = String.format("Naziv: %s%nCena: %.2f%nOpis: %s%nAktiven: %s", product.naziv, product.cena, product.opis, product.aktiven);
-                            tv.setText(text);
+                                final String text = String.format("Naziv: %s%nCena: %.2f%nOpis: %s%nAktiven: %s", product.naziv, product.cena, product.opis, product.aktiven);
+                                tv.setText(text);
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -68,7 +78,7 @@ public class ProductDetailActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.product_details, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -80,8 +90,8 @@ public class ProductDetailActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.odjava) {
+            Utils.odjava(this);
         }
 
         return super.onOptionsItemSelected(item);
