@@ -1,6 +1,8 @@
 package seminarska.ep.seminarska.activity;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -56,23 +58,34 @@ public class CartActivity extends ListActivity {
             @Override
             public void onClick(View v) {
                 if(skupaj != 0.0) {
-                    final RequestQueue queue = Volley.newRequestQueue(CartActivity.this);
-                    final StringRequest stringRequest = new StringRequest(Request.Method.GET, CHECKOUT,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Toast.makeText(CartActivity.this, "Naročilo je bilo oddano.", Toast.LENGTH_LONG).show();
-                                    finish();
-                                }
-                            }, new Response.ErrorListener() {
+                    final AlertDialog.Builder dialog = new AlertDialog.Builder(CartActivity.this);
+                    dialog.setTitle("Oddaja naročila");
+                    dialog.setMessage("Ste prepričani da želite oddati naročilo?");
+                    dialog.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(CartActivity.this, "An error occurred.", Toast.LENGTH_LONG).show();
-                            Log.w(TAG, "Exception: " + error.getLocalizedMessage());
+                        public void onClick(DialogInterface dialog, int which) {
+                            final RequestQueue queue = Volley.newRequestQueue(CartActivity.this);
+                            final StringRequest stringRequest = new StringRequest(Request.Method.GET, CHECKOUT,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            Toast.makeText(CartActivity.this, "Naročilo je bilo oddano.", Toast.LENGTH_LONG).show();
+                                            finish();
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(CartActivity.this, "An error occurred.", Toast.LENGTH_LONG).show();
+                                    Log.w(TAG, "Exception: " + error.getLocalizedMessage());
+                                }
+                            });
+
+                            queue.add(stringRequest);
                         }
                     });
+                    dialog.setNegativeButton("Nazaj", null);
+                    dialog.create().show();
 
-                    queue.add(stringRequest);
                 }
             }
         });

@@ -63,6 +63,7 @@ public class ProductsAdapter extends ArrayAdapter<Product> {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
+                                Toast.makeText(ctx, "Izdelek " + product.naziv + " je bil dodan v košarici", Toast.LENGTH_LONG).show();
                             }
                         }, new Response.ErrorListener() {
                     @Override
