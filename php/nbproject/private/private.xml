@@ -2,19 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/ep/NetBeansProjects/ep/php/index.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/controller/CustomerController.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/salesman/controller/SalesmanController.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/controller/AnonymousController.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/ViewHelper.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/model/Activation.php</file>
-            <file>file:/home/ep/NetBeansProjects/ep/php/view/customer-message.php</file>
-        </group>
         <group name="php">
             <file>file:/home/ep/NetBeansProjects/ep/php/salesman/index.php</file>
             <file>file:/home/ep/NetBeansProjects/ep/php/salesman/controller/SalesmanController.php</file>
             <file>file:/home/ep/NetBeansProjects/ep/php/salesman/view/salesman-images-edit.php</file>
+        </group>
+        <group>
+            <file>file:/home/ep/NetBeansProjects/ep/php/index.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/controller/CustomerController.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/view/customer-products-list.php</file>
+            <file>file:/home/ep/NetBeansProjects/ep/php/static/css/style.css</file>
         </group>
     </open-files>
 </project-private>

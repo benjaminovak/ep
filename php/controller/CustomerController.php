@@ -3,6 +3,7 @@
 require_once(dirname(__FILE__)."/../model/UsersDB.php");
 require_once(dirname(__FILE__)."/../model/OrdersDB.php");
 require_once(dirname(__FILE__)."/../model/ProductsDB.php");
+require_once(dirname(__FILE__)."/../model/RatingDB.php");
 require_once(dirname(__FILE__)."/../ViewHelper.php");
 require_once(dirname(__FILE__)."/../model/OsebaForm.php");
 
@@ -49,8 +50,9 @@ class CustomerController {
     public static function products() {
         
         $products = ProductsDB::getAllActive();
-        foreach ($products as $value) {
+        foreach ($products as &$value) {
             $images[$value["id"]] = ImagesDB::getProdutFirst(["izdelek_id" => $value["id"]]);
+            $value["rating"] = RatingDB::getAverage(["izdelek_id" => $value["id"]]);
         }
         echo ViewHelper::render("view/customer-products-list.php", [
             "products" => $products, "images" => $images
@@ -65,6 +67,7 @@ class CustomerController {
         if (self::checkValues($data)) {
             $product = ProductsDB::get($data);
             $images = ImagesDB::getProdutAll(["izdelek_id" => $product["id"]]);
+            $product["rating"] = RatingDB::getAverage(["izdelek_id" => $product["id"]]);
             echo ViewHelper::render("view/customer-products-detail.php", [
                 "product" => $product, "images" => $images
             ]);
@@ -211,6 +214,33 @@ class CustomerController {
         }
         echo("Uspešno posodobljen profil.");
         
+    }
+    
+    public static function setActiveUser() {
+        $rules = [
+            'email' => FILTER_SANITIZE_STRING,
+            'key' => FILTER_SANITIZE_STRING,
+        ];
+        
+        $data = filter_input_array(INPUT_GET, $rules);
+        $params["mail"] = urldecode($data['email']);
+        $params["aktiven"] = "da";
+        return UsersDB::userSetActive($params);
+    }
+    
+    public static function addRating() {
+        $rules = [
+            'ocena' => FILTER_SANITIZE_NUMBER_INT,
+            'id' => FILTER_SANITIZE_NUMBER_INT,
+            'izdelek' => FILTER_SANITIZE_NUMBER_INT
+        ];
+        
+        $data = filter_input_array(INPUT_POST, $rules);
+        if (count(RatingDB::get(["izdelek_id" => $data["izdelek"], "stranka_uporabnik_id" => $data["id"]])) == 1) {
+            RatingDB::update(["ocena" => $data["ocena"], "izdelek_id" => $data["izdelek"], "stranka_uporabnik_id" => $data["id"]]);
+        } else {
+            RatingDB::insert(["ocena" => $data["ocena"], "izdelek_id" => $data["izdelek"], "stranka_uporabnik_id" => $data["id"]]);
+        }
     }
     
     /*

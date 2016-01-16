@@ -102,6 +102,12 @@ class UsersDB extends AbstractDB {
     }
     
     //Posodabljanje dnevnika prodajalca
+    public static function userSetActive(array $params) {
+        return parent::modify("UPDATE uporabnik SET aktiven = :aktiven "
+                        . " WHERE mail = :mail", $params);
+    }
+    
+    //Posodabljanje dnevnika prodajalca
     public static function updateSalesmanDiary(array $params) {
         return parent::modify("UPDATE prodajalec SET dnevnik_id = :dnevnik_id "
                         . " WHERE uporabnik_id = :uporabnik_id", $params);

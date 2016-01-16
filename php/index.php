@@ -24,21 +24,24 @@ $urls = [
         if(isset($_GET['email']) && isset($_GET['key'])) {
             $reg_success = AnonymousController::checkRegistration();
             if ($reg_success) {
+                CustomerController::setActiveUser();
                 echo ViewHelper::render("view/customer-message.php", [
                 "message" => "Registracija uspešna! Lahko se sedaj prijavite." 
                 ]);
-//                echo "DA";
-//                AnonymousController::registrationSuccessful();
+
             } else {
                 echo ViewHelper::render("view/customer-message.php", [
                 "message" => "Registracija neuspešna! Vpišite pravi registracijski naslov." 
                 ]);
-//                 echo "NE";
 //                AnonymousController::registrationUnsuccessful();
             }
         } else {
             AnonymousController::registration(); 
         }
+    }, 
+    "customer/rating" => function(){
+        CustomerController::addRating();
+//        echo json_encode($_POST["ocena"]);
     }, 
     "customer/registration/mailsent" => function(){
         echo ViewHelper::render("view/customer-message.php", [

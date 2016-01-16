@@ -5,6 +5,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="<?= str_replace("index.php/", "static/css/style.css", BASE_URL) ?>" />
         <title>Spletna trgovina  EP</title>
     </head>
@@ -56,6 +57,24 @@
                                     </div>
                                     <div class="col-lg-1 col-md-1 col-sm-1">
                                         <a href="<?= BASE_URL?>" type="button" class="btn btn-info btn-sm" id="back">Nazaj</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="container-fluid">
+                                    <div class="row-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <div class="rate-ex2-cnt col-md-3">
+                                                        <div id="1" izdelek="<?= $product['id'] ?>" class="rate-btn-1 rate-btn rate-product-<?= $product['id'] ?>-1"></div>
+                                                        <div id="2" izdelek="<?= $product['id'] ?>" class="rate-btn-2 rate-btn rate-product-<?= $product['id'] ?>-2"></div>
+                                                        <div id="3" izdelek="<?= $product['id'] ?>" class="rate-btn-3 rate-btn rate-product-<?= $product['id'] ?>-3"></div>
+                                                        <div id="4" izdelek="<?= $product['id'] ?>" class="rate-btn-4 rate-btn rate-product-<?= $product['id'] ?>-4"></div>
+                                                        <div id="5" izdelek="<?= $product['id'] ?>" class="rate-btn-5 rate-btn rate-product-<?= $product['id'] ?>-5"></div>
+                                                </div>
+                                                <div class="col-md-9">Povprečna ocena: <?= $product['rating'] ?></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -128,5 +147,40 @@
                     </div>
                 </div>
             </div>
+        <script>
+        // rating script
+        $(function(){ 
+           $('.rate-btn').hover(function(){
+                var izdelek = $(this).attr('izdelek');
+                console.log(izdelek);
+                $('.rate-btn').removeClass('rate-btn-hover');
+                var therate = $(this).attr('id');
+                console.log(therate);
+                for (var i = 5; i >= 1; i--) {
+                    if(i > therate) {
+                        $('.rate-product-'+izdelek+'-'+i).removeClass('rate-btn-hover');
+                    } else {
+                        $('.rate-product-'+izdelek+'-'+i).addClass('rate-btn-hover');
+                    }
+                };
+            });
+        });
+        </script>
+        <script>
+            $(function(){ 
+                $('.rate-btn').click(function(){    
+                    var therate = $(this).attr('id');
+                    var izdelek = $(this).attr('izdelek');
+                    var uporabnik_id = "<?php echo $_SESSION['id']; ?>"
+                    var data = 'ocena='+therate+'&id='+uporabnik_id+'&izdelek='+izdelek;
+                    $.ajax({
+                        type : "POST",
+                        url : "<?php echo(BASE_URL . 'customer/rating'); ?>" ,
+                        data: data,
+                        success:function(){}
+                    })
+                });
+            });
+        </script>
     </body>
 </html>

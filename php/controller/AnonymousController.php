@@ -50,13 +50,13 @@ class AnonymousController {
     
     public static function checkRegistration() {
         $rules = [
-            'email' => FILTER_SANITIZE_STRING,
+            'email' => FILTER_SANITIZE_SPECIAL_CHARS,
             'key' => FILTER_SANITIZE_STRING,
         ];
         
-        $data = filter_input_array(INPUT_GET, self::getLoginRules());
-        $mail = urldecode($_GET['email']);
-        $activation_key = urldecode($_GET['key']);
+        $data = filter_input_array(INPUT_GET, $rules);
+        $mail = urldecode($data['email']);
+        $activation_key = urldecode($data['key']);
         return Activation::checkActivationCode($mail, $activation_key);
     }
     
